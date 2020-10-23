@@ -16,7 +16,6 @@ from plone.supermodel.directives import fieldset
 from plone.supermodel.directives import primary
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
-from z3c.relationfield.schema import Relation
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
@@ -44,13 +43,11 @@ class IMyRowSchema(Interface):
     )
 
 
-
 class IExample(model.Schema):
     """Dexterity-Schema with all field-types."""
 
     # The most used fields
     # textline, text, bool, richtext, email
-
 
     fieldset(
         'numberfields',
@@ -61,7 +58,12 @@ class IExample(model.Schema):
     fieldset(
         'datetimefields',
         label=u'Date and time fields',
-        fields=('datetime_field', 'date_field', 'time_field', 'timedelta_field'),
+        fields=(
+            'datetime_field',
+            'date_field',
+            'time_field',
+            'timedelta_field',
+        ),
     )
 
     fieldset(
@@ -224,7 +226,6 @@ class IExample(model.Schema):
         AjaxSelectFieldWidget,
         vocabulary='plone.app.vocabularies.PortalTypes'
     )
-
 
     tuple_field = schema.Tuple(
         title=u'Tuple field',
@@ -402,11 +403,11 @@ class IExample(model.Schema):
         title=u'Dict field',
         description=u"zope.schema.Dict",
         required=False,
-        key_type = schema.TextLine(
+        key_type=schema.TextLine(
             title=u'Key',
             required=False,
             ),
-        value_type = schema.TextLine(
+        value_type=schema.TextLine(
             title=u'Value',
             required=False,
             ),
@@ -416,12 +417,12 @@ class IExample(model.Schema):
         title=u'Dict field with key and value as choice',
         description=u"zope.schema.Dict",
         required=False,
-        key_type = schema.Choice(
+        key_type=schema.Choice(
             title=u'Key',
             values=[u'One', u'Two', u'Three'],
             required=False,
             ),
-        value_type = schema.Set(
+        value_type=schema.Set(
             title=u'Value',
             value_type=schema.Choice(
                 values=[u'Beginner', u'Advanced', u'Professional'],
