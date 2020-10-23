@@ -1,0 +1,5 @@
+===================
+example.contenttype
+===================
+
+User documentation
