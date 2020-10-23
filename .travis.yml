@@ -33,7 +33,7 @@ before_install:
   - cp test_plone$PLONE_VERSION.cfg buildout.cfg
 
 install:
-  - travis_retry pip install -U tox coveralls coverage -c constraints.txt
+  - travis_retry pip install -U tox -c constraints.txt
 
 before_script:
   - 'export DISPLAY=:99.0'
@@ -43,11 +43,6 @@ before_script:
 
 script:
   - PYTEST_ADDOPTS="-s -vv" tox
-
-after_success:
-  - python -m coverage.pickle2json
-  - coverage combine
-  - coveralls
 
 notifications:
   email:
