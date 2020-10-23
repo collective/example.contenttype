@@ -2,26 +2,8 @@
    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
    This text does not appear on pypi or github. It is a comment.
 
-.. image:: https://travis-ci.org/collective/example.contenttype.svg?branch=master
-    :target: https://travis-ci.org/collective/example.contenttype
-
-.. image:: https://coveralls.io/repos/github/collective/example.contenttype/badge.svg?branch=master
-    :target: https://coveralls.io/github/collective/example.contenttype?branch=master
-    :alt: Coveralls
-
-.. image:: https://img.shields.io/pypi/v/example.contenttype.svg
-    :target: https://pypi.python.org/pypi/example.contenttype/
-    :alt: Latest Version
-
-.. image:: https://img.shields.io/pypi/status/example.contenttype.svg
-    :target: https://pypi.python.org/pypi/example.contenttype
-    :alt: Egg Status
-
-.. image:: https://img.shields.io/pypi/pyversions/example.contenttype.svg?style=plastic   :alt: Supported - Python Versions
-
-.. image:: https://img.shields.io/pypi/l/example.contenttype.svg
-    :target: https://pypi.python.org/pypi/example.contenttype/
-    :alt: License
+.. image:: https://travis-ci.com/collective/example.contenttype.svg?branch=master
+    :target: https://travis-ci.com/collective/example.contenttype
 
 
 ===================
