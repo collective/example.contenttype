@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from collective.z3cform.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield import DictRow
-from plone.app.multilingual.browser.interfaces import make_relation_root_path
+# from collective.z3cform.datagridfield import DataGridFieldFactory
+# from collective.z3cform.datagridfield import DictRow
+# from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.z3cform.widget import AjaxSelectFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
@@ -20,27 +20,27 @@ from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
-from zope.interface import Interface
+# from zope.interface import Interface
 
 
-class IMyRowSchema(Interface):
+# class IMyRowSchema(Interface):
 
-    choice_field = schema.Choice(
-        title=u'Choice Field',
-        vocabulary='plone.app.vocabularies.PortalTypes',
-        required=False,
-        )
-    directives.widget('objective', SelectFieldWidget)
+#     choice_field = schema.Choice(
+#         title=u'Choice Field',
+#         vocabulary='plone.app.vocabularies.PortalTypes',
+#         required=False,
+#         )
+#     directives.widget('objective', SelectFieldWidget)
 
-    textline_field = schema.TextLine(
-        title=u'Textline field',
-        required=False,
-        )
+#     textline_field = schema.TextLine(
+#         title=u'Textline field',
+#         required=False,
+#         )
 
-    bool_field = schema.Bool(
-        title=u'Boolean field',
-        required=False,
-    )
+#     bool_field = schema.Bool(
+#         title=u'Boolean field',
+#         required=False,
+#     )
 
 
 class IExample(model.Schema):
@@ -61,8 +61,8 @@ class IExample(model.Schema):
         fields=(
             'datetime_field',
             'date_field',
-            'time_field',
-            'timedelta_field',
+            # 'time_field',
+            # 'timedelta_field',
         ),
     )
 
@@ -112,13 +112,13 @@ class IExample(model.Schema):
             ),
     )
 
-    fieldset(
-        'datagrid',
-        label=u'Datagrid field',
-        fields=(
-            'datagrid_field',
-            ),
-    )
+    # fieldset(
+    #     'datagrid',
+    #     label=u'Datagrid field',
+    #     fields=(
+    #         'datagrid_field',
+    #         ),
+    # )
 
     primary('title')
     title = schema.TextLine(
@@ -284,17 +284,17 @@ class IExample(model.Schema):
         required=False,
     )
 
-    time_field = schema.Time(
-        title=u'Time field',
-        description=u'zope.schema.Time',
-        required=False,
-        )
+    # time_field = schema.Time(
+    #     title=u'Time field',
+    #     description=u'zope.schema.Time',
+    #     required=False,
+    #     )
 
-    timedelta_field = schema.Timedelta(
-        title=u'Timedelta field',
-        description=u'zope.schema.Timedelta',
-        required=False,
-        )
+    # timedelta_field = schema.Timedelta(
+    #     title=u'Timedelta field',
+    #     description=u'zope.schema.Timedelta',
+    #     required=False,
+    #     )
 
     # Relation Fields
     relationchoice_field = RelationChoice(
@@ -308,7 +308,7 @@ class IExample(model.Schema):
         RelatedItemsFieldWidget,
         pattern_options={
             "selectableTypes": ["Document"],
-            "basePath": make_relation_root_path,
+            # "basePath": make_relation_root_path,
         },
     )
 
@@ -326,7 +326,7 @@ class IExample(model.Schema):
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
             "selectableTypes": ["Document", "Folder"],
-            "basePath": make_relation_root_path,
+            # "basePath": make_relation_root_path,
         },
     )
 
@@ -432,14 +432,14 @@ class IExample(model.Schema):
             ),
         )
 
-    datagrid_field = schema.List(
-        title=u'Datagrid field',
-        description=u"schema.List",
-        value_type=DictRow(title=u'Table', schema=IMyRowSchema),
-        default=[],
-        required=False,
-    )
-    directives.widget('datagrid_field', DataGridFieldFactory)
+    # datagrid_field = schema.List(
+    #     title=u'Datagrid field',
+    #     description=u"schema.List",
+    #     value_type=DictRow(title=u'Table', schema=IMyRowSchema),
+    #     default=[],
+    #     required=False,
+    # )
+    # directives.widget('datagrid_field', DataGridFieldFactory)
 
 
 @implementer(IExample)
