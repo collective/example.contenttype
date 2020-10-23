@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<registry>
+
+  <record name="plone.displayed_types">
+    <value purge="False">
+      <element>example</element>
+    </value>
+  </record>
+
+  <record name="plone.default_page_types">
+    <value purge="False">
+      <element>example</element>
+    </value>
+  </record>
+
+</registry>
