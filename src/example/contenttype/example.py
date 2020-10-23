@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.z3cform.widget import AjaxSelectFieldWidget
@@ -19,6 +21,28 @@ from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
+from zope.interface import Interface
+
+
+class IMyRowSchema(Interface):
+
+    choice_field = schema.Choice(
+        title=u'Choice Field',
+        vocabulary='plone.app.vocabularies.PortalTypes',
+        required=False,
+        )
+    directives.widget('objective', SelectFieldWidget)
+
+    textline_field = schema.TextLine(
+        title=u'Textline field',
+        required=False,
+        )
+
+    bool_field = schema.Bool(
+        title=u'Boolean field',
+        required=False,
+    )
+
 
 
 class IExample(model.Schema):
@@ -83,6 +107,14 @@ class IExample(model.Schema):
             'dottedname_field',
             'dict_field',
             'dict_field_with_choice',
+            ),
+    )
+
+    fieldset(
+        'datagrid',
+        label=u'Datagrid field',
+        fields=(
+            'datagrid_field',
             ),
     )
 
@@ -398,6 +430,15 @@ class IExample(model.Schema):
             missing_value={},
             ),
         )
+
+    datagrid_field = schema.List(
+        title=u'Datagrid field',
+        description=u"schema.List",
+        value_type=DictRow(title=u'Table', schema=IMyRowSchema),
+        default=[],
+        required=False,
+    )
+    directives.widget('datagrid_field', DataGridFieldFactory)
 
 
 @implementer(IExample)
