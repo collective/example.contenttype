@@ -11,7 +11,7 @@ class DocumentVocabulary(object):
         # Use getObject since the DataConverter expects a real object.
         for brain in api.content.find(portal_type='Document', sort_on='sortable_title'):
             terms.append(SimpleTerm(
-                value=brain.getObject(),
+                value=brain.UID,
                 token=brain.UID,
                 title=u'{} ({})'.format(brain.Title, brain.getPath()),
             ))
