@@ -3,6 +3,7 @@ from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
+from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import AjaxSelectFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.app.z3cform.widget import SelectFieldWidget
@@ -87,7 +88,12 @@ class IExample(model.Schema):
     fieldset(
         'relationfields',
         label=u'Relation fields',
-        fields=('relationchoice_field', 'relationlist_field'),
+        fields=(
+            'relationchoice_field',
+            'relationlist_field',
+            'relationlist_field_search_mode',
+            'relationlist_field_select',
+        ),
     )
 
     fieldset(
@@ -328,6 +334,41 @@ class IExample(model.Schema):
             "selectableTypes": ["Document", "Folder"],
             "basePath": make_relation_root_path,
         },
+    )
+
+    relationlist_field_search_mode = RelationList(
+        title=u"Relationlist Field in Search Mode",
+        description=u'z3c.relationfield.schema.RelationList',
+        default=[],
+        value_type=RelationChoice(
+            source=CatalogSource(
+                portal_type=['Document', 'Event'],
+                review_state='published')
+            ),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        "relationlist_field_search_mode",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["Document", "Folder"],
+            "basePath": make_relation_root_path,
+            "mode": "search",
+        },
+    )
+
+    relationlist_field_select = RelationList(
+        title=u'Relationlist with select widget',
+        default=[],
+        value_type=RelationChoice(vocabulary='example.vocabularies.documents'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        'relationlist_field_select',
+        SelectFieldWidget,
     )
 
     # Number fields
