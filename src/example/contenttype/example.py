@@ -24,10 +24,6 @@ from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
 
-AJAX_DOCUMENT_FOLDER_VOCAB = StaticCatalogVocabulary({
-    'portal_type': ['Document', 'Folder'],
-})
-
 
 class IMyRowSchema(Interface):
 
@@ -101,6 +97,7 @@ class IExample(model.Schema):
             'relationchoice_field_radio',
             'relationlist_field_select',
             'relationlist_field_checkbox',
+            'relationchoice_field_ajax_select',
             'relationlist_field_ajax_select',
         ),
     )
@@ -353,7 +350,6 @@ class IExample(model.Schema):
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
             "selectableTypes": ["Document", "Folder"],
-            "basePath": make_relation_root_path,
         },
     )
 
@@ -374,20 +370,22 @@ class IExample(model.Schema):
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
         pattern_options={
-            "basePath": make_relation_root_path,
-            "baseCriteria": [{
-                'i': 'portal_type',
-                'o': 'plone.app.querystring.operation.selection.any',
-                'v': ['Document', 'Event']},
+            "baseCriteria": [
                 {
-                'i': 'review_state',
-                'o': 'plone.app.querystring.operation.selection.any',
-                'v': 'published'
+                    'i': 'portal_type',
+                    'o': 'plone.app.querystring.operation.selection.any',
+                    'v': ['Document', 'Event'],
+                },
+                {
+                    'i': 'review_state',
+                    'o': 'plone.app.querystring.operation.selection.any',
+                    'v': 'published',
                 }],
             "mode": "search",
         },
     )
 
+    # this works in volto!
     relationchoice_field_select = RelationChoice(
         title=u'RelationChoice with select widget',
         vocabulary=StaticCatalogVocabulary({
@@ -441,34 +439,53 @@ class IExample(model.Schema):
         CheckBoxFieldWidget,
     )
 
-    relationlist_field_ajax_select = RelationList(
-        title=u"Relationlist Field with AJAXSelect",
+    relationchoice_field_ajax_select = RelationChoice(
+        title=u"Relationchoice Field with AJAXSelect",
         description=u'z3c.relationfield.schema.RelationList',
-        value_type=RelationChoice(
-            vocabulary=AJAX_DOCUMENT_FOLDER_VOCAB
-        ),
+        vocabulary=StaticCatalogVocabulary({
+            'portal_type': ['Document', 'Event'],
+        }),
         required=False,
     )
     directives.widget(
-        'relationlist_field_ajax_select',
+        'relationchoice_field_ajax_select',
         AjaxSelectFieldWidget,
-        vocabulary=AJAX_DOCUMENT_FOLDER_VOCAB,
+        vocabulary=StaticCatalogVocabulary({
+            'portal_type': ['Document', 'Event'],
+        }),
         pattern_options={                   # Options for Select2
             'minimumInputLength': 2,        # - Don't query until at least two characters have been typed
             'ajax': {'quietMillis': 500},   # - Wait 500ms after typing to make query
         },
     )
 
-    # Stringfield
 
-    # AjaxSelectWidget with CatalogQuery storing a relation
+    relationlist_field_ajax_select = RelationList(
+        title=u"Relationlist Field with AJAXSelect",
+        description=u'z3c.relationfield.schema.RelationList',
+        value_type=RelationChoice(
+            vocabulary=StaticCatalogVocabulary({
+                'portal_type': ['Document', 'Event'],
+                'review_state': 'published',
+            })
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationlist_field_ajax_select',
+        AjaxSelectFieldWidget,
+        vocabulary=StaticCatalogVocabulary({
+            'portal_type': ['Document', 'Event'],
+        }),
+        pattern_options={                   # Options for Select2
+            'minimumInputLength': 2,        # - Don't query until at least two characters have been typed
+            'ajax': {'quietMillis': 500},   # - Wait 500ms after typing to make query
+        },
+    )
 
-    # AjaxSelectWidget with CatalogQuery storing a uuid in a list
-
-    # Relationwidget storing on uuid in a list
-
-    # Storing uuids instead of relationvalues
-
+    # These look like relationsfields (see above) but only store the uuid(s) of the selected target
+    # as a string in a the field instead of a RelationValue.
+    # A good way to use these is in combination with a index that allows you to query these connenctions.
     uuid_choice_field = schema.Choice(
         title=u"Choice field with RelatedItems widget storing uuids",
         description=u'schema.Choice',
