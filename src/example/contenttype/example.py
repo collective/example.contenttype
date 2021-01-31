@@ -22,6 +22,11 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
+from .vocabularies import AJAXContentQueryVocabulary
+
+AJAX_DOCUMENT_FOLDER_VOCAB = AJAXContentQueryVocabulary(
+    portal_type=['Document', 'Folder'],
+)
 
 
 class IMyRowSchema(Interface):
@@ -89,23 +94,27 @@ class IExample(model.Schema):
         'relationfields',
         label=u'Relation fields',
         fields=(
-            # 'relationchoice_field',
-            # 'relationlist_field',
-            # 'relationlist_field_search_mode',
+            'relationchoice_field',
+            'relationlist_field',
+            'relationlist_field_search_mode',
+            'relationchoice_field_select',
             'relationlist_field_select',
+            'relationlist_field_checkbox',
+            'relationlist_field_ajax_select',
         ),
     )
 
-    # fieldset(
-    #     'uuidrelationfields',
-    #     label=u'Relation widgets with uuids',
-    #     fields=(
-    #         'uuid_choice_field',
-    #         'uuid_list_field',
-    #         'uuid_list_field_search_mode',
-    #         'uuid_list_field_select',
-    #     ),
-    # )
+    fieldset(
+        'uuidrelationfields',
+        label=u'Relation widgets with uuids',
+        fields=(
+            'uuid_choice_field',
+            'uuid_list_field',
+            'uuid_list_field_search_mode',
+            'uuid_list_field_select',
+            'uuid_list_field_checkboxes',
+        ),
+    )
 
     fieldset(
         'filefields',
@@ -314,72 +323,73 @@ class IExample(model.Schema):
         )
 
     # Relation Fields
-    # relationchoice_field = RelationChoice(
-    #     title=u"Relationchoice field",
-    #     description=u'z3c.relationfield.schema.RelationChoice',
-    #     vocabulary='plone.app.vocabularies.Catalog',
-    #     required=False,
-    # )
-    # directives.widget(
-    #     "relationchoice_field",
-    #     RelatedItemsFieldWidget,
-    #     pattern_options={
-    #         "selectableTypes": ["Document"],
-    #         "basePath": make_relation_root_path,
-    #     },
-    # )
+    relationchoice_field = RelationChoice(
+        title=u"Relationchoice field",
+        description=u'z3c.relationfield.schema.RelationChoice',
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+    directives.widget(
+        "relationchoice_field",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["Document"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
-    # relationlist_field = RelationList(
-    #     title=u"Relationlist Field",
-    #     description=u'z3c.relationfield.schema.RelationList',
-    #     default=[],
-    #     value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
-    #     required=False,
-    #     missing_value=[],
-    # )
-    # directives.widget(
-    #     "relationlist_field",
-    #     RelatedItemsFieldWidget,
-    #     vocabulary='plone.app.vocabularies.Catalog',
-    #     pattern_options={
-    #         "selectableTypes": ["Document", "Folder"],
-    #         "basePath": make_relation_root_path,
-    #     },
-    # )
+    relationlist_field = RelationList(
+        title=u"Relationlist Field",
+        description=u'z3c.relationfield.schema.RelationList',
+        default=[],
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        "relationlist_field",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["Document", "Folder"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
-    # relationlist_field_search_mode = RelationList(
-    #     title=u"Relationlist Field in Search Mode",
-    #     description=u'z3c.relationfield.schema.RelationList',
-    #     default=[],
-    #     value_type=RelationChoice(
-    #         source=CatalogSource(
-    #             portal_type=['Document', 'Event'],
-    #             review_state='published')
-    #         ),
-    #     required=False,
-    #     missing_value=[],
-    # )
-    # directives.widget(
-    #     "relationlist_field_search_mode",
-    #     RelatedItemsFieldWidget,
-    #     vocabulary='plone.app.vocabularies.Catalog',
-    #     pattern_options={
-    #         "basePath": make_relation_root_path,
-    #         "baseCriteria": [{
-    #             'i': 'portal_type',
-    #             'o': 'plone.app.querystring.operation.selection.any',
-    #             'v': ['Document', 'Event']},
-    #             {
-    #             'i': 'review_state',
-    #             'o': 'plone.app.querystring.operation.selection.any',
-    #             'v': 'published'
-    #             }],
-    #         "mode": "search",
-    #     },
-    # )
+    relationlist_field_search_mode = RelationList(
+        title=u"Relationlist Field in Search Mode",
+        description=u'z3c.relationfield.schema.RelationList',
+        default=[],
+        value_type=RelationChoice(
+            source=CatalogSource(
+                portal_type=['Document', 'Event'],
+                review_state='published')
+            ),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        "relationlist_field_search_mode",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "basePath": make_relation_root_path,
+            "baseCriteria": [{
+                'i': 'portal_type',
+                'o': 'plone.app.querystring.operation.selection.any',
+                'v': ['Document', 'Event']},
+                {
+                'i': 'review_state',
+                'o': 'plone.app.querystring.operation.selection.any',
+                'v': 'published'
+                }],
+            "mode": "search",
+        },
+    )
 
     relationchoice_field_select = RelationChoice(
-        title=u'Relationlist with select widget',
+        title=u'RelationChoice with select widget',
+        value_in_vocabulary=False,
         vocabulary='example.vocabularies.documents',
         required=False,
     )
@@ -389,15 +399,47 @@ class IExample(model.Schema):
     )
 
     relationlist_field_select = RelationList(
-        title=u'Relationlist with select widget',
-        default=[],
-        value_type=RelationChoice(vocabulary='example.vocabularies.documents'),
+        title=u'RelationList with select widget',
+        value_type=RelationChoice(
+            vocabulary='example.vocabularies.documents',
+            value_in_vocabulary=False,
+        ),
         required=False,
-        missing_value=[],
     )
     directives.widget(
         'relationlist_field_select',
         SelectFieldWidget,
+    )
+
+    relationlist_field_checkbox = RelationList(
+        title=u'RelationList with Checkboxes',
+        value_type=RelationChoice(
+            vocabulary='example.vocabularies.documents',
+            value_in_vocabulary=False,
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationlist_field_checkbox',
+        CheckBoxFieldWidget,
+    )
+
+    relationlist_field_ajax_select = RelationList(
+        title=u"Relationlist Field with AJAXSelect",
+        description=u'z3c.relationfield.schema.RelationList',
+        value_type=RelationChoice(
+            vocabulary=AJAX_DOCUMENT_FOLDER_VOCAB
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationlist_field_ajax_select',
+        AjaxSelectFieldWidget,
+        vocabulary=AJAX_DOCUMENT_FOLDER_VOCAB,
+        pattern_options={             # Options for Select2
+            'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+            'ajax': {'quietMillis': 500},   # - Wait 500ms after typing to make query
+        },
     )
 
     # Stringfield
@@ -410,72 +452,84 @@ class IExample(model.Schema):
 
     # Storing uuids instead of relationvalues
 
-    # uuid_choice_field = schema.Choice(
-    #     title=u"Choice field with Relationchoice widget storing uuids",
-    #     description=u'schema.Choice',
-    #     vocabulary='plone.app.vocabularies.Catalog',
-    #     required=False,
-    # )
-    # directives.widget(
-    #     "uuid_choice_field",
-    #     RelatedItemsFieldWidget,
-    #     pattern_options={
-    #         "selectableTypes": ["Document"],
-    #         "basePath": make_relation_root_path,
-    #     },
-    # )
+    uuid_choice_field = schema.Choice(
+        title=u"Choice field with RelatedItems widget storing uuids",
+        description=u'schema.Choice',
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+    directives.widget(
+        "uuid_choice_field",
+        RelatedItemsFieldWidget,
+        pattern_options={
+            "selectableTypes": ["Document"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
-    # uuid_list_field = schema.List(
-    #     title=u"List Field with Relationchoice widget storing uuids",
-    #     description=u'schema.List',
-    #     default=[],
-    #     value_type=schema.Choice(vocabulary='plone.app.vocabularies.Catalog'),
-    #     required=False,
-    #     missing_value=[],
-    # )
-    # directives.widget(
-    #     "uuid_list_field",
-    #     RelatedItemsFieldWidget,
-    #     vocabulary='plone.app.vocabularies.Catalog',
-    #     pattern_options={
-    #         "selectableTypes": ["Document", "Folder"],
-    #         "basePath": make_relation_root_path,
-    #     },
-    # )
+    uuid_list_field = schema.List(
+        title=u"List Field with RelatedItems widget storing uuids",
+        description=u'schema.List',
+        default=[],
+        value_type=schema.Choice(vocabulary='plone.app.vocabularies.Catalog'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        "uuid_list_field",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "selectableTypes": ["Document", "Folder"],
+            "basePath": make_relation_root_path,
+        },
+    )
 
-    # uuid_list_field_search_mode = schema.List(
-    #     title=u"Relationlist Field in Search Mode",
-    #     description=u'z3c.relationfield.schema.RelationList',
-    #     default=[],
-    #     value_type=schema.Choice(
-    #         source=CatalogSource(
-    #             portal_type=['Document', 'Event'],
-    #             review_state='published')
-    #         ),
-    #     required=False,
-    #     missing_value=[],
-    # )
-    # directives.widget(
-    #     "uuid_list_field_search_mode",
-    #     RelatedItemsFieldWidget,
-    #     vocabulary='plone.app.vocabularies.Catalog',
-    #     pattern_options={
-    #         "basePath": make_relation_root_path,
-    #         "mode": "search",
-    #     },
-    # )
+    uuid_list_field_search_mode = schema.List(
+        title=u"List Field with RelatedItems widget in Search Mode",
+        description=u'schema.List',
+        default=[],
+        value_type=schema.Choice(
+            source=CatalogSource(
+                portal_type=['Document', 'Event'],
+                review_state='published')
+            ),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        "uuid_list_field_search_mode",
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            "basePath": make_relation_root_path,
+            "mode": "search",
+        },
+    )
 
-    # uuid_list_field_select = schema.List(
-    #     title=u'List with select widget storing uuids',
-    #     default=[],
-    #     value_type=schema.Choice(vocabulary='example.vocabularies.documents'),
-    #     required=False,
-    #     missing_value=[],
-    # )
-    # directives.widget(
-    #     'uuid_list_field_select',
-    #     SelectFieldWidget,
-    # )
+    uuid_list_field_select = schema.List(
+        title=u'List with select widget storing uuids',
+        default=[],
+        value_type=schema.Choice(vocabulary='example.vocabularies.documents'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        'uuid_list_field_select',
+        SelectFieldWidget,
+    )
+
+    uuid_list_field_checkboxes = schema.List(
+        title=u'List with checkbox widget storing uuids',
+        default=[],
+        value_type=schema.Choice(vocabulary='example.vocabularies.documents'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        'uuid_list_field_checkboxes',
+        CheckBoxFieldWidget,
+    )
 
     # Number fields
     int_field = schema.Int(
