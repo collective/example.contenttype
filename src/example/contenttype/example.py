@@ -4,6 +4,7 @@ from collective.z3cform.datagridfield import DictRow
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.vocabularies.catalog import StaticCatalogVocabulary
 from plone.app.z3cform.widget import AjaxSelectFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.app.z3cform.widget import SelectFieldWidget
@@ -22,11 +23,10 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
-from .vocabularies import AJAXContentQueryVocabulary
 
-AJAX_DOCUMENT_FOLDER_VOCAB = AJAXContentQueryVocabulary(
-    portal_type=['Document', 'Folder'],
-)
+AJAX_DOCUMENT_FOLDER_VOCAB = StaticCatalogVocabulary({
+    'portal_type': ['Document', 'Folder'],
+})
 
 
 class IMyRowSchema(Interface):
@@ -98,6 +98,7 @@ class IExample(model.Schema):
             'relationlist_field',
             'relationlist_field_search_mode',
             'relationchoice_field_select',
+            'relationchoice_field_radio',
             'relationlist_field_select',
             'relationlist_field_checkbox',
             'relationlist_field_ajax_select',
@@ -389,8 +390,10 @@ class IExample(model.Schema):
 
     relationchoice_field_select = RelationChoice(
         title=u'RelationChoice with select widget',
-        value_in_vocabulary=False,
-        vocabulary='example.vocabularies.documents',
+        vocabulary=StaticCatalogVocabulary({
+            'portal_type': ['Document', 'Event'],
+            'review_state': 'published',
+        }),
         required=False,
     )
     directives.widget(
@@ -398,11 +401,23 @@ class IExample(model.Schema):
         SelectFieldWidget,
     )
 
+    relationchoice_field_radio = RelationChoice(
+        title=u'RelationChoice with Radio widget',
+        vocabulary=StaticCatalogVocabulary({
+            'portal_type': ['Document', 'Event'],
+            'review_state': 'published',
+        }),
+        required=False,
+    )
+    directives.widget(
+        'relationchoice_field_radio',
+        RadioFieldWidget,
+    )
+
     relationlist_field_select = RelationList(
         title=u'RelationList with select widget',
         value_type=RelationChoice(
             vocabulary='example.vocabularies.documents',
-            value_in_vocabulary=False,
         ),
         required=False,
     )
@@ -415,7 +430,6 @@ class IExample(model.Schema):
         title=u'RelationList with Checkboxes',
         value_type=RelationChoice(
             vocabulary='example.vocabularies.documents',
-            value_in_vocabulary=False,
         ),
         required=False,
     )
