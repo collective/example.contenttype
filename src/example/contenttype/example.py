@@ -424,6 +424,9 @@ class IExample(model.Schema):
     directives.widget(
         'relationlist_field_select',
         SelectFieldWidget,
+        pattern_options={
+            'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
+        }
     )
 
     relationlist_field_checkbox = RelationList(
@@ -450,8 +453,8 @@ class IExample(model.Schema):
         'relationlist_field_ajax_select',
         AjaxSelectFieldWidget,
         vocabulary=AJAX_DOCUMENT_FOLDER_VOCAB,
-        pattern_options={             # Options for Select2
-            'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+        pattern_options={                   # Options for Select2
+            'minimumInputLength': 2,        # - Don't query until at least two characters have been typed
             'ajax': {'quietMillis': 500},   # - Wait 500ms after typing to make query
         },
     )
