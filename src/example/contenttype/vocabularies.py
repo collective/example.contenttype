@@ -6,6 +6,6 @@ from plone.app.vocabularies.catalog import StaticCatalogVocabulary
 @provider(IVocabularyFactory)
 def DocumentVocabularyFactory(context=None):
     return StaticCatalogVocabulary({
-        'portal_type': 'Document',
+        'portal_type': ['Document', 'News Item'],
         'sort_on': 'sortable_title',
     })
