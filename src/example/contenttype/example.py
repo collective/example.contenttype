@@ -404,7 +404,7 @@ class IExample(model.Schema):
         vocabulary=StaticCatalogVocabulary({
             'portal_type': ['Document', 'Event'],
             'review_state': 'published',
-        }),
+        }, title_template='{brain.Title}'),  # Set a custom vocabulary item title
         required=False,
     )
     directives.widget(
@@ -441,7 +441,7 @@ class IExample(model.Schema):
 
     relationchoice_field_ajax_select = RelationChoice(
         title=u"Relationchoice Field with AJAXSelect",
-        description=u'z3c.relationfield.schema.RelationList',
+        description=u'z3c.relationfield.schema.RelationChoice',
         vocabulary=StaticCatalogVocabulary({
             'portal_type': ['Document', 'Event'],
         }),
@@ -459,7 +459,6 @@ class IExample(model.Schema):
         },
     )
 
-
     relationlist_field_ajax_select = RelationList(
         title=u"Relationlist Field with AJAXSelect",
         description=u'z3c.relationfield.schema.RelationList',
@@ -476,7 +475,7 @@ class IExample(model.Schema):
         AjaxSelectFieldWidget,
         vocabulary=StaticCatalogVocabulary({
             'portal_type': ['Document', 'Event'],
-        }),
+        }, title_template="{brain.Type}: {brain.Title} at {path}"),  # Custom item rendering
         pattern_options={                   # Options for Select2
             'minimumInputLength': 2,        # - Don't query until at least two characters have been typed
             'ajax': {'quietMillis': 500},   # - Wait 500ms after typing to make query
