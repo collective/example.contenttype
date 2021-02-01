@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
+from example.contenttype.testing import EXAMPLE_CONTENTTYPE_INTEGRATION_TESTING
 from plone import api
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from example.contenttype.testing import EXAMPLE_CONTENTTYPE_INTEGRATION_TESTING  # noqa: E501
+from plone.app.testing import setRoles, TEST_USER_ID
 
 import unittest
 
@@ -29,17 +28,14 @@ class TestSetup(unittest.TestCase):
 
     def test_product_installed(self):
         """Test if example.contenttype is installed."""
-        self.assertTrue(self.installer.isProductInstalled(
-            'example.contenttype'))
+        self.assertTrue(self.installer.isProductInstalled('example.contenttype'))
 
     def test_browserlayer(self):
         """Test that IExampleContenttypeLayer is registered."""
-        from example.contenttype.interfaces import (
-            IExampleContenttypeLayer)
+        from example.contenttype.interfaces import IExampleContenttypeLayer
         from plone.browserlayer import utils
-        self.assertIn(
-            IExampleContenttypeLayer,
-            utils.registered_layers())
+
+        self.assertIn(IExampleContenttypeLayer, utils.registered_layers())
 
 
 class TestUninstall(unittest.TestCase):
@@ -59,14 +55,11 @@ class TestUninstall(unittest.TestCase):
 
     def test_product_uninstalled(self):
         """Test if example.contenttype is cleanly uninstalled."""
-        self.assertFalse(self.installer.isProductInstalled(
-            'example.contenttype'))
+        self.assertFalse(self.installer.isProductInstalled('example.contenttype'))
 
     def test_browserlayer_removed(self):
         """Test that IExampleContenttypeLayer is removed."""
-        from example.contenttype.interfaces import \
-            IExampleContenttypeLayer
+        from example.contenttype.interfaces import IExampleContenttypeLayer
         from plone.browserlayer import utils
-        self.assertNotIn(
-            IExampleContenttypeLayer,
-            utils.registered_layers())
+
+        self.assertNotIn(IExampleContenttypeLayer, utils.registered_layers())
