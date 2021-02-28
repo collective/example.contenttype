@@ -433,22 +433,34 @@ class IExample(model.Schema):
     #     RadioFieldWidget,
     # )
 
-    relationlist_field_select = RelationList(
-        title=u'RelationList with select widget',
-        value_type=RelationChoice(
-            vocabulary=StaticCatalogVocabulary(
-                {
-                    'portal_type': ['Document', 'Event'],
-                    'review_state': 'published',
-                }
-            ),
-        ),
-        required=False,
-    )
-    directives.widget(
-        'relationlist_field_select',
-        SelectFieldWidget,
-    )
+    # relationlist_field_select = RelationList(
+    #     title=u'RelationList with select widget',
+    #     value_type=RelationChoice(
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 'portal_type': ['Document', 'Event'],
+    #                 'review_state': 'published',
+    #             }
+    #         ),
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     'relationlist_field_select',
+    #     SelectFieldWidget,
+    # )
+
+    # relationlist_field_select_named_vocabulary = RelationList(
+    #     title=u'RelationList with select widget. Uses named vocabulary',
+    #     value_type=RelationChoice(
+    #         vocabulary='example.vocabularies.documents'
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     'relationlist_field_select_named_vocabulary',
+    #     SelectFieldWidget,
+    # )
 
     # relationlist_field_checkbox = RelationList(
     #     title=u'RelationList with Checkboxes',
@@ -461,6 +473,8 @@ class IExample(model.Schema):
     #     'relationlist_field_checkbox',
     #     CheckBoxFieldWidget,
     # )
+
+    # # AjaxSelectFieldWidget!
 
     # relationchoice_field_ajax_select = RelationChoice(
     #     title=u'Relationchoice Field with AJAXSelect',
@@ -475,6 +489,7 @@ class IExample(model.Schema):
     # directives.widget(
     #     'relationchoice_field_ajax_select',
     #     AjaxSelectFieldWidget,
+    #     # For AjaxSelectFieldWidget the vocabulary needs to be passed to the widget as well!
     #     vocabulary=StaticCatalogVocabulary(
     #         {
     #             'portal_type': ['Document', 'Event'],
@@ -502,6 +517,7 @@ class IExample(model.Schema):
     # directives.widget(
     #     'relationlist_field_ajax_select',
     #     AjaxSelectFieldWidget,
+    #     # For AjaxSelectFieldWidget the vocabulary needs to be passed to the widget as well!
     #     vocabulary=StaticCatalogVocabulary(
     #         {
     #             'portal_type': ['Document', 'Event', 'Folder'],
@@ -514,9 +530,38 @@ class IExample(model.Schema):
     #     },
     # )
 
-    # These look like relationsfields (see above) but only store the uuid(s) of the selected target
-    # as a string in a the field instead of a RelationValue.
+    # relationlist_field_ajax_select_named_vocabulary = RelationList(
+    #     title=u'Relationlist Field with AJAXSelect. Uses named vocabulary.',
+    #     description=u'z3c.relationfield.schema.RelationList',
+    #     value_type=RelationChoice(
+    #         vocabulary='example.vocabularies.documents'
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     'relationlist_field_ajax_select_named_vocabulary',
+    #     AjaxSelectFieldWidget,
+    #     # For AjaxSelectFieldWidget the vocabulary needs to be passed to the widget as well!
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             'portal_type': ['Document', 'Event', 'Folder'],
+    #         },
+    #         title_template='{brain.Type}: {brain.Title} at {path}',
+    #     ),  # Custom item rendering
+    #     pattern_options={  # Options for Select2
+    #         'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+    #         'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
+
+
+    # Store UUID of the selected target using various widgets
+    #
+    # The UUID is stores as a string (or list) in a the field instead of as a RelationValue.
     # A good way to use these is in combination with a index that allows you to query these connenctions.
+    # These can also be used in controlpanels or other cases where storing a RelationValue on a object
+    # is not possible or wanted.
+
     # uuid_choice_field = schema.Choice(
     #     title=u'Choice field with RelatedItems widget storing uuids',
     #     description=u'schema.Choice',
@@ -585,7 +630,7 @@ class IExample(model.Schema):
     # # From here on we use other widgets than the default RelatedItemsFieldWidget
 
     # uuid_choice_field_select = schema.Choice(
-    #     title=u'UUID Choice with select widget storing uuids',
+    #     title=u'Choice with select widget storing uuids',
     #     vocabulary=StaticCatalogVocabulary(
     #         {
     #             'portal_type': ['Document', 'Event'],
@@ -600,7 +645,7 @@ class IExample(model.Schema):
     # )
 
     # uuid_choice_field_radio = schema.Choice(
-    #     title=u'RelationChoice with Radio widget storing uuids',
+    #     title=u'Choice with Radio widget storing uuids',
     #     vocabulary=StaticCatalogVocabulary(
     #         {
     #             'portal_type': ['Document', 'Event'],
@@ -616,9 +661,15 @@ class IExample(model.Schema):
     # )
 
     # uuid_list_field_select = schema.List(
-    #     title=u'RelationList with select widget with items from a named vocabulary storing uuids',
+    #     title=u'List with select widget storing uuids',
     #     value_type=schema.Choice(
-    #         vocabulary='example.vocabularies.documents',
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 'portal_type': ['Document', 'Event'],
+    #                 'review_state': 'published',
+    #             },
+    #             title_template='{brain.Title}',
+    #         ),  # Set a custom vocabulary item title
     #     ),
     #     required=False,
     # )
@@ -630,10 +681,32 @@ class IExample(model.Schema):
     #     },
     # )
 
-    # uuid_list_field_checkbox = schema.List(
-    #     title=u'RelationList with Checkboxes storing uuids',
+    # uuid_list_field_select_named_vocabulary = schema.List(
+    #     title=u'List with select widget storing uuids. Uses named vocabulary',
     #     value_type=schema.Choice(
     #         vocabulary='example.vocabularies.documents',
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     'uuid_list_field_select_named_vocabulary',
+    #     SelectFieldWidget,
+    #     pattern_options={
+    #         'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
+    #     },
+    # )
+
+
+    # uuid_list_field_checkbox = schema.List(
+    #     title=u'List with Checkboxes storing uuids',
+    #     value_type=schema.Choice(
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 'portal_type': ['Document', 'Event'],
+    #                 'review_state': 'published',
+    #             },
+    #             title_template='{brain.Title}',
+    #         ),  # Set a custom vocabulary item title
     #     ),
     #     required=False,
     # )
@@ -643,7 +716,7 @@ class IExample(model.Schema):
     # )
 
     # uuid_choice_field_ajax_select = schema.Choice(
-    #     title=u'Relationchoice Field with AJAXSelect storing uuids',
+    #     title=u'Choice Field with AJAXSelect storing uuids',
     #     description=u'z3c.relationfield.schema.RelationChoice',
     #     vocabulary=StaticCatalogVocabulary(
     #         {
@@ -667,33 +740,49 @@ class IExample(model.Schema):
     # )
 
     # uuid_list_field_ajax_select = schema.List(
-    #     title=u'Relationlist Field with AJAXSelect storing uuids',
+    #     title=u'List Field with AJAXSelect storing uuids.',
     #     description=u'z3c.relationfield.schema.RelationList',
     #     value_type=schema.Choice(
     #         vocabulary=StaticCatalogVocabulary(
     #             {
     #                 'portal_type': ['Document', 'Event'],
     #                 'review_state': 'published',
-    #             }
-    #         )
+    #             },
+    #         ),
     #     ),
     #     required=False,
     # )
     # directives.widget(
     #     'uuid_list_field_ajax_select',
     #     AjaxSelectFieldWidget,
-    #     vocabulary=StaticCatalogVocabulary(
-    #         {
-    #             'portal_type': ['Document', 'Event'],
-    #         },
-    #         title_template='{brain.Type}: {brain.Title} at {path}',
-    #     ),  # Custom item rendering
+    #     vocabulary='example.vocabularies.documents',
     #     pattern_options={  # Options for Select2
     #         'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
     #         'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
     #         'closeOnSelect': False,  # - Leave dropdown open for multiple selection
     #     },
     # )
+
+    # uuid_list_field_ajax_select_named_vocabulary = schema.List(
+    #     title=u'List Field with AJAXSelect storing uuids. Uses named vocabulary',
+    #     description=u'z3c.relationfield.schema.RelationList',
+    #     value_type=schema.Choice(
+    #         vocabulary='example.vocabularies.documents',
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     'uuid_list_field_ajax_select_named_vocabulary',
+    #     AjaxSelectFieldWidget,
+    #     vocabulary='example.vocabularies.documents',
+    #     pattern_options={  # Options for Select2
+    #         'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+    #         'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
+    #         'closeOnSelect': False,  # - Leave dropdown open for multiple selection
+    #     },
+    # )
+
+
 
     # # Number fields
     # int_field = schema.Int(
