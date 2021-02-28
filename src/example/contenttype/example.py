@@ -42,101 +42,107 @@ from zope.interface import implementer
 class IExample(model.Schema):
     """Dexterity-Schema with all field-types."""
 
-    # The most used fields
-    # textline, text, bool, richtext, email
+    # Defauult only has title and description
 
-    # fieldset(
-    #     'numberfields',
-    #     label=u'Number fields',
-    #     fields=('int_field', 'float_field'),
-    # )
+    fieldset(
+        'textfields',
+        label=u'Text fields',
+        fields=(
+            'text_field',
+            'textline_field',
+            'email_field',
+            'richtext_field',
+            'uri_field',
+            'sourcetext_field',
+            'ascii_field',
+            'bytesline_field',
+            'asciiline_field',
+            'pythonidentifier_field',
+            'dottedname_field',
+            'dict_field',
+            'dict_field_with_choice',
+        ),
+    )
 
-    # fieldset(
-    #     'datetimefields',
-    #     label=u'Date and time fields',
-    #     fields=(
-    #         'datetime_field',
-    #         'date_field',
-    #         # 'time_field',
-    #         # 'timedelta_field',
-    #     ),
-    # )
+    fieldset(
+        'numberfields',
+        label=u'Number fields',
+        fields=('int_field', 'float_field'),
+    )
 
-    # fieldset(
-    #     'choicefields',
-    #     label=u'Choice and Multiple Choice fields',
-    #     fields=(
-    #         'choice_field',
-    #         'choice_field_radio',
-    #         'choice_field_select',
-    #         'choice_field_voc',
-    #         'list_field',
-    #         'list_field_checkbox',
-    #         'list_field_select',
-    #         'list_field_voc_unconstrained',
-    #         'tuple_field',
-    #         'set_field',
-    #         'set_field_checkbox',
-    #     ),
-    # )
+    fieldset(
+        'datetimefields',
+        label=u'Date and time fields',
+        fields=(
+            'datetime_field',
+            # 'date_field',
+            # 'time_field',
+            # 'timedelta_field',
+        ),
+    )
 
-    # fieldset(
-    #     'relationfields',
-    #     label=u'Relation fields',
-    #     fields=(
-    #         'relationchoice_field',
-    #         'relationlist_field',
-    #         'relationchoice_field_constrained',
-    #         'relationlist_field_constrained',
-    #         'relationlist_field_search_mode',
-    #         'relationchoice_field_select',
-    #         'relationchoice_field_radio',
-    #         'relationlist_field_select',
-    #         'relationlist_field_checkbox',
-    #         'relationchoice_field_ajax_select',
-    #         'relationlist_field_ajax_select',
-    #     ),
-    # )
+    fieldset(
+        'choicefields',
+        label=u'Choice and Multiple Choice fields',
+        fields=(
+            'bool_field',
+            'choice_field',
+            'choice_field_radio',
+            'choice_field_select',
+            'choice_field_voc',
+            'list_field',
+            'list_field_checkbox',
+            'list_field_select',
+            'list_field_voc_unconstrained',
+            'tuple_field',
+            'set_field',
+            'set_field_checkbox',
+        ),
+    )
 
-    # fieldset(
-    #     'uuidrelationfields',
-    #     label=u'Relation widgets with uuids',
-    #     fields=(
-    #         'uuid_choice_field',
-    #         'uuid_list_field',
-    #         'uuid_choice_field_constrained',
-    #         'uuid_list_field_constrained',
-    #         'uuid_list_field_search_mode',
-    #         'uuid_choice_field_select',
-    #         'uuid_choice_field_radio',
-    #         'uuid_list_field_select',
-    #         'uuid_list_field_checkbox',
-    #         'uuid_choice_field_ajax_select',
-    #         'uuid_list_field_ajax_select',
-    #     ),
-    # )
+    fieldset(
+        'relationfields',
+        label=u'Relation fields',
+        fields=(
+            'relationchoice_field',
+            'relationlist_field',
+            'relationchoice_field_constrained',
+            'relationlist_field_constrained',
+            'relationlist_field_search_mode',
+            'relationchoice_field_select',
+            'relationchoice_field_radio',
+            'relationlist_field_select',
+            'relationlist_field_select_named_vocabulary',
+            'relationlist_field_checkbox',
+            'relationchoice_field_ajax_select',
+            'relationlist_field_ajax_select',
+            'relationlist_field_ajax_select_named_vocabulary',
+        ),
+    )
 
-    # fieldset(
-    #     'filefields',
-    #     label=u'File fields',
-    #     fields=('file_field', 'image_field'),
-    # )
+    fieldset(
+        'uuidrelationfields',
+        label=u'Relation widgets with uuids',
+        fields=(
+            # 'uuid_choice_field',
+            # 'uuid_list_field',
+            # 'uuid_choice_field_constrained',
+            # 'uuid_list_field_constrained',
+            # 'uuid_list_field_search_mode',
+            # 'uuid_choice_field_select',
+            # 'uuid_choice_field_radio',
+            # 'uuid_list_field_select',
+            # 'uuid_list_field_checkbox',
+            # 'uuid_choice_field_ajax_select',
+            # 'uuid_list_field_ajax_select',
+        ),
+    )
 
-    # fieldset(
-    #     'otherfields',
-    #     label=u'Other fields',
-    #     fields=(
-    #         'uri_field',
-    #         'sourcetext_field',
-    #         'ascii_field',
-    #         'bytesline_field',
-    #         'asciiline_field',
-    #         'pythonidentifier_field',
-    #         'dottedname_field',
-    #         'dict_field',
-    #         'dict_field_with_choice',
-    #     ),
-    # )
+    fieldset(
+        'filefields',
+        label=u'File fields',
+        fields=('file_field', 'image_field'),
+    )
 
     # fieldset(
     #     'datagrid',
@@ -151,159 +157,226 @@ class IExample(model.Schema):
         required=True,
     )
 
-    # description = schema.TextLine(
-    #     title=u'Description (Textline)',
-    #     description=u'zope.schema.TextLine',
-    #     required=False,
-    # )
+    description = schema.TextLine(
+        title=u'Description (Textline)',
+        description=u'zope.schema.TextLine',
+        required=False,
+    )
 
-    # text_field = schema.Text(
-    #     title=u'Text Field',
-    #     description=u'zope.schema.Text',
-    #     required=False,
-    #     missing_value=u'',
-    # )
 
-    # textline_field = schema.TextLine(
-    #     title=u'Textline field',
-    #     description=u'A simple input field (schema.TextLine)',
-    #     required=False,
-    # )
+    # Text fields
 
-    # bool_field = schema.Bool(
-    #     title=u'Boolean field',
-    #     description=u'zope.schema.Bool',
-    #     required=False,
-    # )
+    text_field = schema.Text(
+        title=u'Text Field',
+        description=u'zope.schema.Text',
+        required=False,
+    )
 
-    # choice_field = schema.Choice(
-    #     title=u'Choice field',
-    #     description=u'zope.schema.Choice',
-    #     values=[u'One', u'Two', u'Three'],
-    #     required=True,
-    # )
+    textline_field = schema.TextLine(
+        title=u'Textline field',
+        description=u'A simple input field (schema.TextLine)',
+        required=False,
+    )
 
-    # directives.widget(choice_field_radio=RadioFieldWidget)
-    # choice_field_radio = schema.Choice(
-    #     title=u'Choice field with radio boxes',
-    #     description=u'zope.schema.Choice',
-    #     values=[u'One', u'Two', u'Three'],
-    #     required=False,
-    # )
+    richtext_field = RichText(
+        title=u'RichText field',
+        description=u'This uses a richtext editor. (plone.app.textfield.RichText)',
+        max_length=2000,
+        required=False,
+    )
 
-    # choice_field_voc = schema.Choice(
-    #     title=u'Choicefield with values from named vocabulary',
-    #     description=u'zope.schema.Choice',
-    #     vocabulary='plone.app.vocabularies.PortalTypes',
-    #     required=False,
-    # )
+    email_field = Email(
+        title=u'Email field',
+        description=u'A simple input field for a email (plone.schema.email.Email)',
+        required=False,
+    )
 
-    # directives.widget(choice_field_select=SelectFieldWidget)
-    # choice_field_select = schema.Choice(
-    #     title=u'Choicefield with select2 widget',
-    #     description=u'zope.schema.Choice',
-    #     vocabulary='plone.app.vocabularies.PortalTypes',
-    #     required=False,
-    # )
+    uri_field = schema.URI(
+        title=u'URI field',
+        description=u'A simple input field for a URLs (zope.schema.URI)',
+        required=False,
+    )
 
-    # list_field = schema.List(
-    #     title=u'List field',
-    #     description=u'zope.schema.List',
-    #     value_type=schema.Choice(
-    #         values=[u'Beginner', u'Advanced', u'Professional'],
-    #     ),
-    #     required=False,
-    #     missing_value=[],
-    # )
+    sourcetext_field = schema.SourceText(
+        title=u'SourceText field',
+        description=u'zope.schema.SourceText',
+        required=False,
+    )
 
-    # directives.widget(list_field_checkbox=CheckBoxFieldWidget)
-    # list_field_checkbox = schema.List(
-    #     title=u'List field with checkboxes',
-    #     description=u'zope.schema.List',
-    #     value_type=schema.Choice(
-    #         values=[u'Beginner', u'Advanced', u'Professional'],
-    #     ),
-    #     required=False,
-    #     missing_value=[],
-    # )
+    ascii_field = schema.ASCII(
+        title=u'ASCII field',
+        description=u'zope.schema.ASCII',
+        required=False,
+    )
 
-    # directives.widget(list_field_select=SelectFieldWidget)
-    # list_field_select = schema.List(
-    #     title=u'List field with select widget',
-    #     description=u'zope.schema.List',
-    #     value_type=schema.Choice(
-    #         values=[u'Beginner', u'Advanced', u'Professional'],
-    #     ),
-    #     required=False,
-    #     missing_value=[],
-    # )
+    bytesline_field = schema.BytesLine(
+        title=u'BytesLine field',
+        description=u'zope.schema.BytesLine',
+        required=False,
+    )
 
-    # list_field_voc_unconstrained = schema.List(
-    #     title=u'List field with values from vocabulary but not constrained to them.',
-    #     description=u'zope.schema.List',
-    #     value_type=schema.TextLine(),
-    #     required=False,
-    #     missing_value=[],
-    # )
-    # directives.widget(
-    #     'list_field_voc_unconstrained',
-    #     AjaxSelectFieldWidget,
-    #     vocabulary='plone.app.vocabularies.PortalTypes',
-    #     pattern_options={
-    #         'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
-    #     },
-    # )
+    asciiline_field = schema.ASCIILine(
+        title=u'ASCIILine field',
+        description=u'zope.schema.ASCIILine',
+        required=False,
+    )
 
-    # tuple_field = schema.Tuple(
-    #     title=u'Tuple field',
-    #     description=u'zope.schema.Tuple',
-    #     value_type=schema.Choice(
-    #         values=[u'Beginner', u'Advanced', u'Professional'],
-    #     ),
-    #     required=False,
-    #     missing_value=(),
-    # )
+    pythonidentifier_field = schema.PythonIdentifier(
+        title=u'PythonIdentifier field',
+        description=u'zope.schema.PythonIdentifier',
+        required=False,
+    )
 
-    # set_field = schema.Set(
-    #     title=u'Set field',
-    #     description=u'zope.schema.Set',
-    #     value_type=schema.Choice(
-    #         values=[u'Beginner', u'Advanced', u'Professional'],
-    #     ),
-    #     required=False,
-    #     missing_value={},
-    # )
+    dottedname_field = schema.DottedName(
+        title=u'DottedName field',
+        description=u'zope.schema.DottedName',
+        required=False,
+    )
 
-    # directives.widget(set_field_checkbox=CheckBoxFieldWidget)
-    # set_field_checkbox = schema.Set(
-    #     title=u'Set field with checkboxes',
-    #     description=u'zope.schema.Set',
-    #     value_type=schema.Choice(
-    #         values=[u'Beginner', u'Advanced', u'Professional'],
-    #     ),
-    #     required=False,
-    #     missing_value={},
-    # )
+    # choice_fields
 
-    # # File fields
-    # image_field = NamedBlobImage(
-    #     title=u'Image field',
-    #     description=u'A upload field for images (plone.namedfile.field.NamedBlobImage)',
-    #     required=False,
-    # )
+    bool_field = schema.Bool(
+        title=u'Boolean field',
+        description=u'zope.schema.Bool',
+        required=False,
+    )
 
-    # file_field = NamedBlobFile(
-    #     title=u'File field',
-    #     description=u'A upload field for files (plone.namedfile.field.NamedBlobFile)',
-    #     required=False,
-    # )
+    choice_field = schema.Choice(
+        title=u'Choice field',
+        description=u'zope.schema.Choice',
+        values=[u'One', u'Two', u'Three'],
+        required=True,
+        default=u'One',
+    )
 
-    # # Date and Time fields
-    # datetime_field = schema.Datetime(
-    #     title=u'Datetime field',
-    #     description=u'Uses a date and time picker (zope.schema.Datetime)',
-    #     required=False,
-    # )
+    directives.widget(choice_field_radio=RadioFieldWidget)
+    choice_field_radio = schema.Choice(
+        title=u'Choice field with radio boxes',
+        description=u'zope.schema.Choice',
+        values=[u'One', u'Two', u'Three'],
+        required=False,
+    )
+
+    choice_field_voc = schema.Choice(
+        title=u'Choicefield with values from named vocabulary',
+        description=u'zope.schema.Choice',
+        vocabulary='plone.app.vocabularies.PortalTypes',
+        required=False,
+    )
+
+    directives.widget(choice_field_select=SelectFieldWidget)
+    choice_field_select = schema.Choice(
+        title=u'Choicefield with select2 widget',
+        description=u'zope.schema.Choice',
+        vocabulary='plone.app.vocabularies.PortalTypes',
+        required=False,
+    )
+
+    list_field = schema.List(
+        title=u'List field',
+        description=u'zope.schema.List',
+        value_type=schema.Choice(
+            values=[u'Beginner', u'Advanced', u'Professional'],
+        ),
+        required=False,
+        missing_value=[],
+        default=[],
+    )
+
+    directives.widget(list_field_checkbox=CheckBoxFieldWidget)
+    list_field_checkbox = schema.List(
+        title=u'List field with checkboxes',
+        description=u'zope.schema.List',
+        value_type=schema.Choice(
+            values=[u'Beginner', u'Advanced', u'Professional'],
+        ),
+        required=False,
+        missing_value=[],
+        default=[],
+    )
+
+    directives.widget(list_field_select=SelectFieldWidget)
+    list_field_select = schema.List(
+        title=u'List field with select widget',
+        description=u'zope.schema.List',
+        value_type=schema.Choice(
+            values=[u'Beginner', u'Advanced', u'Professional'],
+        ),
+        required=False,
+        missing_value=[],
+        default=[],
+    )
+
+    list_field_voc_unconstrained = schema.List(
+        title=u'List field with values from vocabulary but not constrained to them.',
+        description=u'zope.schema.List',
+        value_type=schema.TextLine(),
+        required=False,
+        missing_value=[],
+        default=[],
+    )
+    directives.widget(
+        'list_field_voc_unconstrained',
+        AjaxSelectFieldWidget,
+        vocabulary='plone.app.vocabularies.PortalTypes',
+        pattern_options={
+            'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
+        },
+    )
+
+    tuple_field = schema.Tuple(
+        title=u'Tuple field',
+        description=u'zope.schema.Tuple',
+        value_type=schema.Choice(
+            values=[u'Beginner', u'Advanced', u'Professional'],
+        ),
+        required=False,
+        missing_value=(),
+        default=(),
+    )
+
+    set_field = schema.Set(
+        title=u'Set field',
+        description=u'zope.schema.Set',
+        value_type=schema.Choice(
+            values=[u'Beginner', u'Advanced', u'Professional'],
+        ),
+        required=False,
+        missing_value=set(),
+        default=set(),
+    )
+
+    directives.widget(set_field_checkbox=CheckBoxFieldWidget)
+    set_field_checkbox = schema.Set(
+        title=u'Set field with checkboxes',
+        description=u'zope.schema.Set',
+        value_type=schema.Choice(
+            values=[u'Beginner', u'Advanced', u'Professional'],
+        ),
+        required=False,
+        missing_value=set(),
+        default=set(),
+    )
+
+    # File fields
+    image_field = NamedBlobImage(
+        title=u'Image field',
+        description=u'A upload field for images (plone.namedfile.field.NamedBlobImage)',
+        required=False,
+    )
+
+    file_field = NamedBlobFile(
+        title=u'File field',
+        description=u'A upload field for files (plone.namedfile.field.NamedBlobFile)',
+        required=False,
+    )
+
+    # Date and Time fields
+    datetime_field = schema.Datetime(
+        title=u'Datetime field',
+        description=u'Uses a date and time picker (zope.schema.Datetime)',
+        required=False,
+    )
 
     # date_field = schema.Date(
     #     title=u'Date field',
@@ -542,25 +615,16 @@ class IExample(model.Schema):
     #     'relationlist_field_ajax_select_named_vocabulary',
     #     AjaxSelectFieldWidget,
     #     # For AjaxSelectFieldWidget the vocabulary needs to be passed to the widget as well!
-    #     vocabulary=StaticCatalogVocabulary(
-    #         {
-    #             'portal_type': ['Document', 'Event', 'Folder'],
-    #         },
-    #         title_template='{brain.Type}: {brain.Title} at {path}',
-    #     ),  # Custom item rendering
-    #     pattern_options={  # Options for Select2
-    #         'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
-    #         'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
-    #     },
+    #     vocabulary='example.vocabularies.documents',
     # )
 
 
-    # Store UUID of the selected target using various widgets
-    #
-    # The UUID is stores as a string (or list) in a the field instead of as a RelationValue.
-    # A good way to use these is in combination with a index that allows you to query these connenctions.
-    # These can also be used in controlpanels or other cases where storing a RelationValue on a object
-    # is not possible or wanted.
+    # # Store UUID of the selected target using various widgets
+
+    # # The UUID is stores as a string (or list) in a the field instead of as a RelationValue.
+    # # A good way to use these is in combination with a index that allows you to query these connenctions.
+    # # These can also be used in controlpanels or other cases where storing a RelationValue on a object
+    # # is not possible or wanted.
 
     # uuid_choice_field = schema.Choice(
     #     title=u'Choice field with RelatedItems widget storing uuids',
@@ -783,108 +847,52 @@ class IExample(model.Schema):
     # )
 
 
+    # Number fields
+    int_field = schema.Int(
+        title=u'Integer Field (e.g. 12)',
+        description=u'zope.schema.Int',
+        required=False,
+    )
 
-    # # Number fields
-    # int_field = schema.Int(
-    #     title=u'Integer Field (e.g. 12)',
-    #     description=u'zope.schema.Int',
-    #     required=False,
-    # )
+    float_field = schema.Float(
+        title=u'Float fiel, e.g. 12.',
+        description=u'zope.schema.Float',
+        required=False,
+    )
 
-    # float_field = schema.Float(
-    #     title=u'Float fiel, e.g. 12.',
-    #     description=u'zope.schema.Float',
-    #     required=False,
-    # )
+    # other fields
+    dict_field = schema.Dict(
+        title=u'Dict field',
+        description=u'zope.schema.Dict',
+        required=False,
+        key_type=schema.TextLine(
+            title=u'Key',
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=u'Value',
+            required=False,
+        ),
+    )
 
-    # # Text fields
-    # email_field = Email(
-    #     title=u'Email field',
-    #     description=u'A simple input field for a email (plone.schema.email.Email)',
-    #     required=False,
-    # )
-
-    # uri_field = schema.URI(
-    #     title=u'URI field',
-    #     description=u'A simple input field for a URLs (zope.schema.URI)',
-    #     required=False,
-    # )
-
-    # richtext_field = RichText(
-    #     title=u'RichText field',
-    #     description=u'This uses a richtext editor. (plone.app.textfield.RichText)',
-    #     max_length=2000,
-    #     required=False,
-    # )
-
-    # sourcetext_field = schema.SourceText(
-    #     title=u'SourceText field',
-    #     description=u'zope.schema.SourceText',
-    #     required=False,
-    # )
-
-    # ascii_field = schema.ASCII(
-    #     title=u'ASCII field',
-    #     description=u'zope.schema.ASCII',
-    #     required=False,
-    # )
-
-    # bytesline_field = schema.BytesLine(
-    #     title=u'BytesLine field',
-    #     description=u'zope.schema.BytesLine',
-    #     required=False,
-    # )
-
-    # asciiline_field = schema.ASCIILine(
-    #     title=u'ASCIILine field',
-    #     description=u'zope.schema.ASCIILine',
-    #     required=False,
-    # )
-
-    # pythonidentifier_field = schema.PythonIdentifier(
-    #     title=u'PythonIdentifier field',
-    #     description=u'zope.schema.PythonIdentifier',
-    #     required=False,
-    # )
-
-    # dottedname_field = schema.DottedName(
-    #     title=u'DottedName field',
-    #     description=u'zope.schema.DottedName',
-    #     required=False,
-    # )
-
-    # dict_field = schema.Dict(
-    #     title=u'Dict field',
-    #     description=u'zope.schema.Dict',
-    #     required=False,
-    #     key_type=schema.TextLine(
-    #         title=u'Key',
-    #         required=False,
-    #     ),
-    #     value_type=schema.TextLine(
-    #         title=u'Value',
-    #         required=False,
-    #     ),
-    # )
-
-    # dict_field_with_choice = schema.Dict(
-    #     title=u'Dict field with key and value as choice',
-    #     description=u'zope.schema.Dict',
-    #     required=False,
-    #     key_type=schema.Choice(
-    #         title=u'Key',
-    #         values=[u'One', u'Two', u'Three'],
-    #         required=False,
-    #     ),
-    #     value_type=schema.Set(
-    #         title=u'Value',
-    #         value_type=schema.Choice(
-    #             values=[u'Beginner', u'Advanced', u'Professional'],
-    #         ),
-    #         required=False,
-    #         missing_value={},
-    #     ),
-    # )
+    dict_field_with_choice = schema.Dict(
+        title=u'Dict field with key and value as choice',
+        description=u'zope.schema.Dict',
+        required=False,
+        key_type=schema.Choice(
+            title=u'Key',
+            values=[u'One', u'Two', u'Three'],
+            required=False,
+        ),
+        value_type=schema.Set(
+            title=u'Value',
+            value_type=schema.Choice(
+                values=[u'Beginner', u'Advanced', u'Professional'],
+            ),
+            required=False,
+            missing_value={},
+        ),
+    )
 
     # datagrid_field = schema.List(
     #     title=u'Datagrid field',
