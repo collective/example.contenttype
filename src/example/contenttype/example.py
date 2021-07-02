@@ -406,12 +406,27 @@ class IExample(model.Schema):
         key_type=schema.TextLine(
             title=u'Key',
             required=False,
-            ),
+        ),
         value_type=schema.TextLine(
             title=u'Value',
             required=False,
-            ),
-        )
+        ),
+    )
+    
+    vocabularyterms_field = schema.Dict(
+        title=u'Vocabulary terms field',
+        description=u"zope.schema.Dict with value_type schema.TextLine and widget vocabularyterms for Volto frontend",
+        required=False,
+        key_type=schema.TextLine(
+            title=u'Key',
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=u'Value',
+            required=False,
+        ),
+        widget='vocabularyterms',
+    )
 
     # dict_field_with_choice = schema.Dict(
     #     title=u'Dict field with key and value as choice',
