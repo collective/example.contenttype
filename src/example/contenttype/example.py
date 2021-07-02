@@ -10,7 +10,8 @@ from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.field import NamedBlobImage
-from plone.schema.email import Email
+from plone.schema import Email
+from plone.schema import Dict  # take Dict field from plone.schema to use the widget attribute
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from plone.supermodel.directives import primary
@@ -108,8 +109,9 @@ class IExample(model.Schema):
             # 'pythonidentifier_field',
             # 'dottedname_field',
             'dict_field',
+            'vocabularyterms_field',
             # 'dict_field_with_choice',
-            ),
+        ),
     )
 
     # fieldset(
@@ -343,12 +345,12 @@ class IExample(model.Schema):
     #     required=False,
     # )
 
-    # # Text fields
-    # email_field = Email(
-    #     title=u'Email field',
-    #     description=u'A simple input field for a email (plone.schema.email.Email)',
-    #     required=False,
-    #     )
+    # Text fields
+    email_field = Email(
+        title=u'Email field',
+        description=u'A simple input field for a email (plone.schema.email.Email)',
+        required=False,
+    )
 
     # uri_field = schema.URI(
     #     title=u'URI field',
@@ -412,10 +414,10 @@ class IExample(model.Schema):
             required=False,
         ),
     )
-    
-    vocabularyterms_field = schema.Dict(
+
+    vocabularyterms_field = Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
         title=u'Vocabulary terms field',
-        description=u"zope.schema.Dict with value_type schema.TextLine and widget vocabularyterms for Volto frontend",
+        description=u"plone.schema.Dict field with value_type schema.TextLine and frontend widget 'VocabularyTermsWidget'",
         required=False,
         key_type=schema.TextLine(
             title=u'Key',
@@ -425,7 +427,7 @@ class IExample(model.Schema):
             title=u'Value',
             required=False,
         ),
-        widget='vocabularyterms',
+        widget='vocabularyterms',  # we use the widget attribute to apply the frontend widget VocabularyWidget
     )
 
     # dict_field_with_choice = schema.Dict(
