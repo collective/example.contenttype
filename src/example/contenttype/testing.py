@@ -21,11 +21,12 @@ class ExampleContenttypeLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.restapi
+
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=example.contenttype)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'example.contenttype:default')
+        applyProfile(portal, "example.contenttype:default")
 
 
 EXAMPLE_CONTENTTYPE_FIXTURE = ExampleContenttypeLayer()
@@ -33,13 +34,13 @@ EXAMPLE_CONTENTTYPE_FIXTURE = ExampleContenttypeLayer()
 
 EXAMPLE_CONTENTTYPE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(EXAMPLE_CONTENTTYPE_FIXTURE,),
-    name='ExampleContenttypeLayer:IntegrationTesting',
+    name="ExampleContenttypeLayer:IntegrationTesting",
 )
 
 
 EXAMPLE_CONTENTTYPE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(EXAMPLE_CONTENTTYPE_FIXTURE,),
-    name='ExampleContenttypeLayer:FunctionalTesting',
+    name="ExampleContenttypeLayer:FunctionalTesting",
 )
 
 
@@ -49,5 +50,5 @@ EXAMPLE_CONTENTTYPE_ACCEPTANCE_TESTING = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='ExampleContenttypeLayer:AcceptanceTesting',
+    name="ExampleContenttypeLayer:AcceptanceTesting",
 )
