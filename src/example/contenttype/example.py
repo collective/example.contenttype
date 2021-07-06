@@ -2,29 +2,36 @@
 # from collective.z3cform.datagridfield import DataGridFieldFactory
 # from collective.z3cform.datagridfield import DictRow
 # from plone.app.multilingual.browser.interfaces import make_relation_root_path
-from plone.app.textfield import RichText
-from plone.app.z3cform.widget import AjaxSelectFieldWidget
-from plone.app.z3cform.widget import RelatedItemsFieldWidget
-from plone.app.z3cform.widget import SelectFieldWidget
-from plone.autoform import directives
+# from plone.app.textfield import RichText
+# from plone.app.z3cform.widget import AjaxSelectFieldWidget
+# from plone.app.z3cform.widget import RelatedItemsFieldWidget
+# from plone.app.z3cform.widget import SelectFieldWidget
+# from plone.autoform import directives
 from plone.dexterity.content import Container
-from plone.namedfile.field import NamedBlobFile
-from plone.namedfile.field import NamedBlobImage
+
+# from plone.namedfile.field import NamedBlobFile
+# from plone.namedfile.field import NamedBlobImage
 from plone.schema import Email
-from plone.schema import Dict  # take Dict field from plone.schema to use the widget attribute
+from plone.schema import (
+    Dict,
+)  # take Dict field from plone.schema to use the widget attribute
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from plone.supermodel.directives import primary
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from z3c.form.browser.radio import RadioFieldWidget
-from z3c.relationfield.schema import RelationChoice
-from z3c.relationfield.schema import RelationList
+
+# from z3c.form.browser.checkbox import CheckBoxFieldWidget
+# from z3c.form.browser.radio import RadioFieldWidget
+# from z3c.relationfield.schema import RelationChoice
+# from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
+
 # from zope.interface import Interface
 
 
 # class IMyRowSchema(Interface):
+#     """Define schema for row in Plone Classic DataGridField
+#     """
 
 #     choice_field = schema.Choice(
 #         title=u'Choice Field',
@@ -98,8 +105,8 @@ class IExample(model.Schema):
     # )
 
     fieldset(
-        'otherfields',
-        label=u'Other fields',
+        "otherfields",
+        label=u"Other fields",
         fields=(
             # 'uri_field',
             # 'sourcetext_field',
@@ -109,8 +116,8 @@ class IExample(model.Schema):
             # 'pythonidentifier_field',
             # 'dottedname_field',
             # 'dict_field',
-            'vocabularyterms_field',
-            'vocabularytermstranslation_field',
+            "vocabularyterms_field",
+            "vocabularytermstranslation_field",
             # 'dict_field_with_choice',
         ),
     )
@@ -123,44 +130,44 @@ class IExample(model.Schema):
     #         ),
     # )
 
-    primary('title')
+    primary("title")
     title = schema.TextLine(
-        title=u'Primary Field (Textline)',
+        title=u"Primary Field (Textline)",
         description=u"zope.schema.TextLine",
         required=True,
-        )
+    )
 
     description = schema.TextLine(
-        title=u'Description (Textline)',
+        title=u"Description (Textline)",
         description=u"zope.schema.TextLine",
         required=False,
-        )
+    )
 
     text_field = schema.Text(
-        title=u'Text Field',
+        title=u"Text Field",
         description=u"zope.schema.Text",
         required=False,
-        missing_value=u'',
+        missing_value=u"",
     )
 
     textline_field = schema.TextLine(
-        title=u'Textline field',
-        description=u'A simple input field (schema.TextLine)',
+        title=u"Textline field",
+        description=u"A simple input field (schema.TextLine)",
         required=False,
-        )
+    )
 
     bool_field = schema.Bool(
-        title=u'Boolean field',
+        title=u"Boolean field",
         description=u"zope.schema.Bool",
         required=False,
     )
 
     choice_field = schema.Choice(
-        title=u'Choice field',
+        title=u"Choice field",
         description=u"zope.schema.Choice",
-        values=[u'One', u'Two', u'Three'],
+        values=[u"One", u"Two", u"Three"],
         required=True,
-        )
+    )
 
     # directives.widget(choice_field_radio=RadioFieldWidget)
     # choice_field_radio = schema.Choice(
@@ -348,8 +355,8 @@ class IExample(model.Schema):
 
     # Text fields
     email_field = Email(
-        title=u'Email field',
-        description=u'A simple input field for a email (plone.schema.email.Email)',
+        title=u"Email field",
+        description=u"A simple input field for a email (plone.schema.email.Email)",
         required=False,
     )
 
@@ -417,42 +424,42 @@ class IExample(model.Schema):
     # )
 
     vocabularyterms_field = Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
-        title=u'Vocabulary terms field',
+        title=u"Vocabulary terms field",
         description=u"plone.schema.Dict field with value_type schema.TextLine and frontend widget 'VocabularyTermsWidget'",
         required=False,
         key_type=schema.TextLine(
-            title=u'Key',
+            title=u"Key",
             required=False,
         ),
         value_type=schema.TextLine(
-            title=u'Value',
+            title=u"Value",
             required=False,
         ),
-        widget='vocabularyterms',  # we use the widget attribute to apply the frontend widget VocabularyWidget
+        widget="vocabularyterms",  # we use the widget attribute to apply the frontend widget VocabularyWidget
     )
 
     vocabularytermstranslation_field = Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
-        title=u'Vocabulary terms field with translations',
+        title=u"Vocabulary terms field with translations",
         description=u"plone.schema.Dict field with value_type Dict and frontend widget 'VocabularyTermsWidget'",
         required=False,
         key_type=schema.TextLine(
-            title=u'Key',
+            title=u"Key",
             required=False,
         ),
         value_type=Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
-            title=u'Term translation',
+            title=u"Term translation",
             description=u"plone.schema.Dict field for translations of vocabulary term",
             required=True,
             key_type=schema.TextLine(
-                title=u'Key',
+                title=u"Key",
                 required=False,
             ),
             value_type=schema.TextLine(
-                title=u'Value',
+                title=u"Value",
                 required=False,
             ),
         ),
-        widget='vocabularyterms',  # we use the widget attribute to apply the frontend widget VocabularyWidget
+        widget="vocabularyterms",  # we use the widget attribute to apply the frontend widget VocabularyWidget
     )
 
     # dict_field_with_choice = schema.Dict(
