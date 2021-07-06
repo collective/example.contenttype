@@ -108,8 +108,9 @@ class IExample(model.Schema):
             # 'asciiline_field',
             # 'pythonidentifier_field',
             # 'dottedname_field',
-            'dict_field',
+            # 'dict_field',
             'vocabularyterms_field',
+            'vocabularytermstranslation_field',
             # 'dict_field_with_choice',
         ),
     )
@@ -401,19 +402,19 @@ class IExample(model.Schema):
     #     required=False,
     #     )
 
-    dict_field = schema.Dict(
-        title=u'Dict field',
-        description=u"zope.schema.Dict",
-        required=False,
-        key_type=schema.TextLine(
-            title=u'Key',
-            required=False,
-        ),
-        value_type=schema.TextLine(
-            title=u'Value',
-            required=False,
-        ),
-    )
+    # dict_field = schema.Dict(
+    #     title=u'Dict field',
+    #     description=u"zope.schema.Dict",
+    #     required=False,
+    #     key_type=schema.TextLine(
+    #         title=u'Key',
+    #         required=False,
+    #     ),
+    #     value_type=schema.TextLine(
+    #         title=u'Value',
+    #         required=False,
+    #     ),
+    # )
 
     vocabularyterms_field = Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
         title=u'Vocabulary terms field',
@@ -426,6 +427,30 @@ class IExample(model.Schema):
         value_type=schema.TextLine(
             title=u'Value',
             required=False,
+        ),
+        widget='vocabularyterms',  # we use the widget attribute to apply the frontend widget VocabularyWidget
+    )
+
+    vocabularytermstranslation_field = Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
+        title=u'Vocabulary terms field with translations',
+        description=u"plone.schema.Dict field with value_type Dict and frontend widget 'VocabularyTermsWidget'",
+        required=False,
+        key_type=schema.TextLine(
+            title=u'Key',
+            required=False,
+        ),
+        value_type=Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
+            title=u'Term translation',
+            description=u"plone.schema.Dict field for translations of vocabulary term",
+            required=True,
+            key_type=schema.TextLine(
+                title=u'Key',
+                required=False,
+            ),
+            value_type=schema.TextLine(
+                title=u'Value',
+                required=False,
+            ),
         ),
         widget='vocabularyterms',  # we use the widget attribute to apply the frontend widget VocabularyWidget
     )
