@@ -3,6 +3,8 @@ from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
+from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.vocabularies.catalog import StaticCatalogVocabulary
 from plone.app.z3cform.widget import AjaxSelectFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.app.z3cform.widget import SelectFieldWidget
@@ -95,7 +97,37 @@ class IExample(model.Schema):
     fieldset(
         'relationfields',
         label=u'Relation fields',
-        fields=('relationchoice_field', 'relationlist_field'),
+        fields=(
+            'relationchoice_field',
+            'relationlist_field',
+            'relationchoice_field_constrained',
+            'relationlist_field_constrained',
+            'relationlist_field_search_mode',
+            'relationchoice_field_select',
+            'relationchoice_field_radio',
+            'relationlist_field_select',
+            'relationlist_field_checkbox',
+            'relationchoice_field_ajax_select',
+            'relationlist_field_ajax_select',
+        ),
+    )
+
+    fieldset(
+        'uuidrelationfields',
+        label=u'Relation widgets with uuids',
+        fields=(
+            'uuid_choice_field',
+            'uuid_list_field',
+            'uuid_choice_field_constrained',
+            'uuid_list_field_constrained',
+            'uuid_list_field_search_mode',
+            'uuid_choice_field_select',
+            'uuid_choice_field_radio',
+            'uuid_list_field_select',
+            'uuid_list_field_checkbox',
+            'uuid_choice_field_ajax_select',
+            'uuid_list_field_ajax_select',
+        ),
     )
 
     fieldset(
@@ -234,7 +266,10 @@ class IExample(model.Schema):
     directives.widget(
         'list_field_voc_unconstrained',
         AjaxSelectFieldWidget,
-        vocabulary='plone.app.vocabularies.PortalTypes'
+        vocabulary='plone.app.vocabularies.PortalTypes',
+        pattern_options={
+            'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
+        },
     )
 
     tuple_field = schema.Tuple(
@@ -309,21 +344,35 @@ class IExample(model.Schema):
     # Relation Fields
     relationchoice_field = RelationChoice(
         title=u"Relationchoice field",
+
+        description=u'z3c.relationfield.schema.RelationChoice',
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+
+    relationlist_field = RelationList(
+        title=u'Relationlist Field',
+        description=u'z3c.relationfield.schema.RelationList',
+        default=[],
+        value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
+        required=False,
+        missing_value=[],
+    )
+
+    relationchoice_field_constrained = RelationChoice(
+        title=u'Relationchoice field (only allows Documents)',
         description=u'z3c.relationfield.schema.RelationChoice',
         vocabulary='plone.app.vocabularies.Catalog',
         required=False,
     )
     directives.widget(
-        "relationchoice_field",
+        "relationchoice_field_constrained",
         RelatedItemsFieldWidget,
-        pattern_options={
-            "selectableTypes": ["Document"],
-            # "basePath": make_relation_root_path,
-        },
+        pattern_options={'selectableTypes': ['Document']},
     )
 
-    relationlist_field = RelationList(
-        title=u"Relationlist Field",
+    relationlist_field_constrained = RelationList(
+        title=u'Relationlist Field (only allows Documents and Events)',
         description=u'z3c.relationfield.schema.RelationList',
         default=[],
         value_type=RelationChoice(vocabulary='plone.app.vocabularies.Catalog'),
@@ -331,12 +380,339 @@ class IExample(model.Schema):
         missing_value=[],
     )
     directives.widget(
-        "relationlist_field",
+        'relationlist_field_constrained',
         RelatedItemsFieldWidget,
+        pattern_options={'selectableTypes': ['Document', 'Event']},
+    )
+
+
+    relationlist_field_search_mode = RelationList(
+        title=u'Relationlist Field in Search Mode (constrained to published Documents and Events)',
+        description=u'z3c.relationfield.schema.RelationList',
+        default=[],
+        value_type=RelationChoice(
+            source=CatalogSource(
+                portal_type=['Document', 'Event'], review_state='published'
+            )
+        ),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        'relationlist_field_search_mode',
+        RelatedItemsFieldWidget,
+        pattern_options={
+            'baseCriteria': [  # This is a optimization that limits the catalog-query
+                {
+                    'i': 'portal_type',
+                    'o': 'plone.app.querystring.operation.selection.any',
+                    'v': ['Document', 'Event'],
+                },
+                {
+                    'i': 'review_state',
+                    'o': 'plone.app.querystring.operation.selection.any',
+                    'v': 'published',
+                },
+            ],
+            'mode': 'search',
+        },
+    )
+
+
+    # From here on we use other widgets than the default RelatedItemsFieldWidget
+
+    # This one also works in Volto!
+    # All other options use the default ObjectWidget in Volto so far.
+    relationchoice_field_select = RelationChoice(
+        title=u'RelationChoice with Select Widget',
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+                'review_state': 'published',
+            }
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationchoice_field_select',
+        SelectFieldWidget,
+    )
+
+    relationchoice_field_radio = RelationChoice(
+        title=u'RelationChoice with Radio Widget (and customized title-template)',
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+                'review_state': 'published',
+            },
+            title_template='{brain.Title}',
+        ),  # Set a custom vocabulary item title
+        required=False,
+    )
+    directives.widget(
+        'relationchoice_field_radio',
+        RadioFieldWidget,
+    )
+
+    relationlist_field_select = RelationList(
+        title=u'RelationList with select widget with items from a named vocabulary',
+        value_type=RelationChoice(
+            vocabulary='example.vocabularies.documents',
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationlist_field_select',
+        SelectFieldWidget,
+        pattern_options={
+            'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
+        },
+    )
+
+    relationlist_field_checkbox = RelationList(
+        title=u'RelationList with Checkboxes',
+        value_type=RelationChoice(
+            vocabulary='example.vocabularies.documents',
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationlist_field_checkbox',
+        CheckBoxFieldWidget,
+    )
+
+    relationchoice_field_ajax_select = RelationChoice(
+        title=u'Relationchoice Field with AJAXSelect',
+        description=u'z3c.relationfield.schema.RelationChoice',
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+            }
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationchoice_field_ajax_select',
+        AjaxSelectFieldWidget,
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+            }
+        ),
+        pattern_options={  # Options for Select2
+            'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+            'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
+        },
+    )
+
+    relationlist_field_ajax_select = RelationList(
+        title=u'Relationlist Field with AJAXSelect',
+        description=u'z3c.relationfield.schema.RelationList',
+        value_type=RelationChoice(
+            vocabulary=StaticCatalogVocabulary(
+                {
+                    'portal_type': ['Document', 'Event'],
+                    'review_state': 'published',
+                }
+            )
+        ),
+        required=False,
+    )
+    directives.widget(
+        'relationlist_field_ajax_select',
+        AjaxSelectFieldWidget,
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event', 'Folder'],
+            },
+            title_template='{brain.Type}: {brain.Title} at {path}',
+        ),  # Custom item rendering
+        pattern_options={  # Options for Select2
+            'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+            'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
+        },
+    )
+
+    # These look like relationsfields (see above) but only store the uuid(s) of the selected target
+    # as a string in a the field instead of a RelationValue.
+    # A good way to use these is in combination with a index that allows you to query these connenctions.
+    uuid_choice_field = schema.Choice(
+        title=u'Choice field with RelatedItems widget storing uuids',
+        description=u'schema.Choice',
         vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+    directives.widget('uuid_choice_field', RelatedItemsFieldWidget)
+
+    uuid_list_field = schema.List(
+        title=u'List Field with RelatedItems widget storing uuids',
+        description=u'schema.List',
+        default=[],
+        value_type=schema.Choice(vocabulary='plone.app.vocabularies.Catalog'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget('uuid_list_field', RelatedItemsFieldWidget)
+
+    uuid_choice_field_constrained = schema.Choice(
+        title=u'Choice field with RelatedItems widget storing uuids (only allows Documents)',
+        description=u'schema.Choice',
+        vocabulary='plone.app.vocabularies.Catalog',
+        required=False,
+    )
+    directives.widget(
+        'uuid_choice_field_constrained',
+        RelatedItemsFieldWidget,
+        pattern_options={'selectableTypes': ['Document']},
+    )
+
+    uuid_list_field_constrained = schema.List(
+        title=u'List Field with RelatedItems widget storing uuids (only allows Documents and Events)',
+        description=u'schema.List',
+        default=[],
+        value_type=schema.Choice(vocabulary='plone.app.vocabularies.Catalog'),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        'uuid_list_field_constrained',
+        RelatedItemsFieldWidget,
+        pattern_options={'selectableTypes': ['Document', 'Folder']},
+    )
+
+    uuid_list_field_search_mode = schema.List(
+        title=u'List Field with RelatedItems widget in Search Mode storing uuids',
+        description=u'schema.List',
+        default=[],
+        value_type=schema.Choice(
+            source=CatalogSource(
+                portal_type=['Document', 'Event'], review_state='published'
+            )
+        ),
+        required=False,
+        missing_value=[],
+    )
+    directives.widget(
+        'uuid_list_field_search_mode',
+        RelatedItemsFieldWidget,
         pattern_options={
             "selectableTypes": ["Document", "Folder"],
-            # "basePath": make_relation_root_path,
+            "basePath": make_relation_root_path,
+            'basePath': '',  # Start the search at the portal root
+            'mode': 'search',
+        },
+    )
+
+    # From here on we use other widgets than the default RelatedItemsFieldWidget
+
+    uuid_choice_field_select = schema.Choice(
+        title=u'UUID Choice with select widget storing uuids',
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+                'review_state': 'published',
+            }
+        ),
+        required=False,
+    )
+    directives.widget(
+        'uuid_choice_field_select',
+        SelectFieldWidget,
+    )
+
+    uuid_choice_field_radio = schema.Choice(
+        title=u'RelationChoice with Radio widget storing uuids',
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+                'review_state': 'published',
+            },
+            title_template='{brain.Title}',
+        ),  # Set a custom vocabulary item title
+        required=False,
+    )
+    directives.widget(
+        'uuid_choice_field_radio',
+        RadioFieldWidget,
+    )
+
+    uuid_list_field_select = schema.List(
+        title=u'RelationList with select widget with items from a named vocabulary storing uuids',
+        value_type=schema.Choice(
+            vocabulary='example.vocabularies.documents',
+        ),
+        required=False,
+    )
+    directives.widget(
+        'uuid_list_field_select',
+        SelectFieldWidget,
+        pattern_options={
+            'closeOnSelect': False,  # Select2 option to leave dropdown open for multiple selection
+        },
+    )
+
+    uuid_list_field_checkbox = schema.List(
+        title=u'RelationList with Checkboxes storing uuids',
+        value_type=schema.Choice(
+            vocabulary='example.vocabularies.documents',
+        ),
+        required=False,
+    )
+    directives.widget(
+        'uuid_list_field_checkbox',
+        CheckBoxFieldWidget,
+    )
+
+    uuid_choice_field_ajax_select = schema.Choice(
+        title=u'Relationchoice Field with AJAXSelect storing uuids',
+        description=u'z3c.relationfield.schema.RelationChoice',
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+            }
+        ),
+        required=False,
+    )
+    directives.widget(
+        'uuid_choice_field_ajax_select',
+        AjaxSelectFieldWidget,
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+            }
+        ),
+        pattern_options={  # Options for Select2
+            'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+            'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
+        },
+    )
+
+    uuid_list_field_ajax_select = schema.List(
+        title=u'Relationlist Field with AJAXSelect storing uuids',
+        description=u'z3c.relationfield.schema.RelationList',
+        value_type=schema.Choice(
+            vocabulary=StaticCatalogVocabulary(
+                {
+                    'portal_type': ['Document', 'Event'],
+                    'review_state': 'published',
+                }
+            )
+        ),
+        required=False,
+    )
+    directives.widget(
+        'uuid_list_field_ajax_select',
+        AjaxSelectFieldWidget,
+        vocabulary=StaticCatalogVocabulary(
+            {
+                'portal_type': ['Document', 'Event'],
+            },
+            title_template='{brain.Type}: {brain.Title} at {path}',
+        ),  # Custom item rendering
+        pattern_options={  # Options for Select2
+            'minimumInputLength': 2,  # - Don't query until at least two characters have been typed
+            'ajax': {'quietMillis': 500},  # - Wait 500ms after typing to make query
+            'closeOnSelect': False,  # - Leave dropdown open for multiple selection
         },
     )
 
