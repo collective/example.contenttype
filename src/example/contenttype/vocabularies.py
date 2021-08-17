@@ -7,7 +7,7 @@ from zope.schema.interfaces import IVocabularyFactory
 def DocumentVocabularyFactory(context=None):
     return StaticCatalogVocabulary(
         {
-            'portal_type': ['Document', 'News Item'],
-            'sort_on': 'sortable_title',
+            "portal_type": ["Document", "News Item"],
+            "sort_on": "sortable_title",
         }
     )
