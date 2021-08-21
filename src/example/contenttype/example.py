@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from collective.z3cform.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield import DictRow
+from collective.z3cform.datagridfield.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield.row import DictRow
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
