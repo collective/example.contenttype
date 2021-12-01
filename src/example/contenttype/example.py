@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from collective.z3cform.datagridfield.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield.row import DictRow
 from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
@@ -24,33 +22,13 @@ from plone.supermodel.directives import primary
 
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
+
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
 from zope.interface import Interface
-
-
-class IMyRowSchema(Interface):
-    """Define schema for row in Plone Classic DataGridField"""
-
-    choice_field = schema.Choice(
-        title=u"Choice Field",
-        vocabulary="plone.app.vocabularies.PortalTypes",
-        required=False,
-    )
-    directives.widget("objective", SelectFieldWidget)
-
-    textline_field = schema.TextLine(
-        title=u"Textline field",
-        required=False,
-    )
-
-    bool_field = schema.Bool(
-        title=u"Boolean field",
-        required=False,
-    )
 
 
 class IExample(model.Schema):
@@ -71,8 +49,8 @@ class IExample(model.Schema):
         fields=(
             "datetime_field",
             "date_field",
-            "time_field",
-            "timedelta_field",
+            # "time_field", # Not supported by plone.restapi yet
+            # "timedelta_field", # Not supported by plone.restapi yet
         ),
     )
 
@@ -107,8 +85,8 @@ class IExample(model.Schema):
             "relationchoice_field_radio",
             "relationlist_field_select",
             "relationlist_field_checkbox",
-            "relationchoice_field_ajax_select",
-            "relationlist_field_ajax_select",
+            # "relationchoice_field_ajax_select", # Not supported by plone.restapi yet
+            # "relationlist_field_ajax_select", # Not supported by plone.restapi yet
         ),
     )
 
@@ -125,8 +103,8 @@ class IExample(model.Schema):
             "uuid_choice_field_radio",
             "uuid_list_field_select",
             "uuid_list_field_checkbox",
-            "uuid_choice_field_ajax_select",
-            "uuid_list_field_ajax_select",
+            # "uuid_choice_field_ajax_select", # Not supported by plone.restapi yet
+            # "uuid_list_field_ajax_select", # Not supported by plone.restapi yet
         ),
     )
 
@@ -147,17 +125,11 @@ class IExample(model.Schema):
             "asciiline_field",
             "pythonidentifier_field",
             "dottedname_field",
-            # 'dict_field',
-            # "vocabularyterms_field",
-            # "vocabularytermstranslation_field",
-            # 'dict_field_with_choice',
+            "dict_field",
+            # "vocabularyterms_field", # Not supported by plone.restapi yet
+            # "vocabularytermstranslation_field", # Not supported by plone.restapi yet
+            "dict_field_with_choice",
         ),
-    )
-
-    fieldset(
-        "datagrid",
-        label=u"Datagrid field",
-        fields=("datagrid_field",),
     )
 
     primary("title")
@@ -327,19 +299,21 @@ class IExample(model.Schema):
         required=False,
     )
 
-    time_field = schema.Time(
-        title=u"Time field",
-        description=u"zope.schema.Time",
-        required=False,
-    )
+    # Not supported by plone.restapi yet
+    # time_field = schema.Time(
+    #     title=u"Time field",
+    #     description=u"zope.schema.Time",
+    #     required=False,
+    # )
 
-    timedelta_field = schema.Timedelta(
-        title=u"Timedelta field",
-        description=u"zope.schema.Timedelta",
-        required=False,
-    )
+    # Not supported by plone.restapi yet
+    # timedelta_field = schema.Timedelta(
+    #     title=u"Timedelta field",
+    #     description=u"zope.schema.Timedelta",
+    #     required=False,
+    # )
 
-    # Relation Fields
+    # # Relation Fields
     relationchoice_field = RelationChoice(
         title=u"Relationchoice field",
         description=u"z3c.relationfield.schema.RelationChoice",
@@ -476,57 +450,59 @@ class IExample(model.Schema):
         CheckBoxFieldWidget,
     )
 
-    relationchoice_field_ajax_select = RelationChoice(
-        title=u"Relationchoice Field with AJAXSelect",
-        description=u"z3c.relationfield.schema.RelationChoice",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        required=False,
-    )
-    directives.widget(
-        "relationchoice_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-        },
-    )
+    # Not supported by plone.restapi yet
+    # relationchoice_field_ajax_select = RelationChoice(
+    #     title=u"Relationchoice Field with AJAXSelect",
+    #     description=u"z3c.relationfield.schema.RelationChoice",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationchoice_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
 
-    relationlist_field_ajax_select = RelationList(
-        title=u"Relationlist Field with AJAXSelect",
-        description=u"z3c.relationfield.schema.RelationList",
-        value_type=RelationChoice(
-            vocabulary=StaticCatalogVocabulary(
-                {
-                    "portal_type": ["Document", "Event"],
-                    "review_state": "published",
-                }
-            )
-        ),
-        required=False,
-    )
-    directives.widget(
-        "relationlist_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event", "Folder"],
-            },
-            title_template="{brain.Type}: {brain.Title} at {path}",
-        ),  # Custom item rendering
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-        },
-    )
+    # Not supported by plone.restapi yet
+    # relationlist_field_ajax_select = RelationList(
+    #     title=u"Relationlist Field with AJAXSelect",
+    #     description=u"z3c.relationfield.schema.RelationList",
+    #     value_type=RelationChoice(
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 "portal_type": ["Document", "Event"],
+    #                 "review_state": "published",
+    #             }
+    #         )
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationlist_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event", "Folder"],
+    #         },
+    #         title_template="{brain.Type}: {brain.Title} at {path}",
+    #     ),  # Custom item rendering
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
 
     # These look like relationsfields (see above) but only store the uuid(s) of the selected target
     # as a string in a the field instead of a RelationValue.
@@ -657,58 +633,60 @@ class IExample(model.Schema):
         CheckBoxFieldWidget,
     )
 
-    uuid_choice_field_ajax_select = schema.Choice(
-        title=u"Relationchoice Field with AJAXSelect storing uuids",
-        description=u"z3c.relationfield.schema.RelationChoice",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        required=False,
-    )
-    directives.widget(
-        "uuid_choice_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-        },
-    )
+    # Not supported by plone.restapi yet
+    # uuid_choice_field_ajax_select = schema.Choice(
+    #     title=u"Relationchoice Field with AJAXSelect storing uuids",
+    #     description=u"z3c.relationfield.schema.RelationChoice",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "uuid_choice_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
 
-    uuid_list_field_ajax_select = schema.List(
-        title=u"Relationlist Field with AJAXSelect storing uuids",
-        description=u"z3c.relationfield.schema.RelationList",
-        value_type=schema.Choice(
-            vocabulary=StaticCatalogVocabulary(
-                {
-                    "portal_type": ["Document", "Event"],
-                    "review_state": "published",
-                }
-            )
-        ),
-        required=False,
-    )
-    directives.widget(
-        "uuid_list_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            },
-            title_template="{brain.Type}: {brain.Title} at {path}",
-        ),  # Custom item rendering
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-            "closeOnSelect": False,  # - Leave dropdown open for multiple selection
-        },
-    )
+    # Not supported by plone.restapi yet
+    # uuid_list_field_ajax_select = schema.List(
+    #     title=u"Relationlist Field with AJAXSelect storing uuids",
+    #     description=u"z3c.relationfield.schema.RelationList",
+    #     value_type=schema.Choice(
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 "portal_type": ["Document", "Event"],
+    #                 "review_state": "published",
+    #             }
+    #         )
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "uuid_list_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         },
+    #         title_template="{brain.Type}: {brain.Title} at {path}",
+    #     ),  # Custom item rendering
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #         "closeOnSelect": False,  # - Leave dropdown open for multiple selection
+    #     },
+    # )
 
     # Number fields
     int_field = schema.Int(
@@ -779,19 +757,19 @@ class IExample(model.Schema):
         required=False,
     )
 
-    # dict_field = schema.Dict(
-    #     title=u'Dict field',
-    #     description=u"zope.schema.Dict",
-    #     required=False,
-    #     key_type=schema.TextLine(
-    #         title=u'Key',
-    #         required=False,
-    #     ),
-    #     value_type=schema.TextLine(
-    #         title=u'Value',
-    #         required=False,
-    #     ),
-    # )
+    dict_field = schema.Dict(
+        title=u"Dict field",
+        description=u"zope.schema.Dict",
+        required=False,
+        key_type=schema.TextLine(
+            title=u"Key",
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=u"Value",
+            required=False,
+        ),
+    )
 
     # vocabularyterms_field = Dict(  # we use the plone.schema field Dict not zope.schema field to use the attribute 'widget'
     #     title=u"Vocabulary terms field",
@@ -832,33 +810,24 @@ class IExample(model.Schema):
     #     widget="vocabularyterms",  # we use the widget attribute to apply the frontend widget VocabularyWidget
     # )
 
-    # dict_field_with_choice = schema.Dict(
-    #     title=u'Dict field with key and value as choice',
-    #     description=u"zope.schema.Dict",
-    #     required=False,
-    #     key_type=schema.Choice(
-    #         title=u'Key',
-    #         values=[u'One', u'Two', u'Three'],
-    #         required=False,
-    #         ),
-    #     value_type=schema.Set(
-    #         title=u'Value',
-    #         value_type=schema.Choice(
-    #             values=[u'Beginner', u'Advanced', u'Professional'],
-    #             ),
-    #         required=False,
-    #         missing_value={},
-    #         ),
-    #     )
-
-    datagrid_field = schema.List(
-        title=u"Datagrid field",
-        description=u"schema.List",
-        value_type=DictRow(title=u"Table", schema=IMyRowSchema),
-        default=[],
+    dict_field_with_choice = schema.Dict(
+        title=u"Dict field with key and value as choice",
+        description=u"zope.schema.Dict",
         required=False,
+        key_type=schema.Choice(
+            title=u"Key",
+            values=[u"One", u"Two", u"Three"],
+            required=False,
+        ),
+        value_type=schema.Set(
+            title=u"Value",
+            value_type=schema.Choice(
+                values=[u"Beginner", u"Advanced", u"Professional"],
+            ),
+            required=False,
+            missing_value={},
+        ),
     )
-    directives.widget("datagrid_field", DataGridFieldFactory)
 
 
 @implementer(IExample)
