@@ -21,10 +21,8 @@ class ExampleContenttypeLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.restapi
-        import collective.z3cform.datagridfield
 
         self.loadZCML(package=plone.restapi)
-        self.loadZCML(package=collective.z3cform.datagridfield)
         self.loadZCML(package=example.contenttype)
 
     def setUpPloneSite(self, portal):

@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from collective.z3cform.datagridfield.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield.row import DictRow
-from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.vocabularies.catalog import StaticCatalogVocabulary
@@ -30,27 +27,6 @@ from zope import schema
 from zope.interface import implementer
 
 from zope.interface import Interface
-
-
-class IMyRowSchema(Interface):
-    """Define schema for row in Plone Classic DataGridField"""
-
-    choice_field = schema.Choice(
-        title=u"Choice Field",
-        vocabulary="plone.app.vocabularies.PortalTypes",
-        required=False,
-    )
-    directives.widget("objective", SelectFieldWidget)
-
-    textline_field = schema.TextLine(
-        title=u"Textline field",
-        required=False,
-    )
-
-    bool_field = schema.Bool(
-        title=u"Boolean field",
-        required=False,
-    )
 
 
 class IExample(model.Schema):
@@ -152,12 +128,6 @@ class IExample(model.Schema):
             # "vocabularytermstranslation_field",
             # 'dict_field_with_choice',
         ),
-    )
-
-    fieldset(
-        "datagrid",
-        label=u"Datagrid field",
-        fields=("datagrid_field",),
     )
 
     primary("title")
@@ -850,15 +820,6 @@ class IExample(model.Schema):
     #         missing_value={},
     #         ),
     #     )
-
-    datagrid_field = schema.List(
-        title=u"Datagrid field",
-        description=u"schema.List",
-        value_type=DictRow(title=u"Table", schema=IMyRowSchema),
-        default=[],
-        required=False,
-    )
-    directives.widget("datagrid_field", DataGridFieldFactory)
 
 
 @implementer(IExample)
