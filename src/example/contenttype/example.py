@@ -290,18 +290,6 @@ class IExample(model.Schema):
         required=False,
     )
 
-    file_field2 = NamedBlobFile(
-        title=u"File field2",
-        description=u"A upload field for files (plone.namedfile.field.NamedBlobFile)",
-        required=False,
-    )
-
-    file_field3 = NamedBlobFile(
-        title=u"File field3",
-        description=u"A upload field for files (plone.namedfile.field.NamedBlobFile)",
-        required=False,
-    )
-
     # Date and Time fields
     datetime_field = schema.Datetime(
         title=u"Datetime field",
