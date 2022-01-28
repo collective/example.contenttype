@@ -200,6 +200,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     directives.widget(list_field_checkbox=CheckBoxFieldWidget)
@@ -211,6 +212,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     directives.widget(list_field_select=SelectFieldWidget)
@@ -222,6 +224,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     list_field_voc_unconstrained = schema.List(
@@ -248,6 +251,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=(),
+        default=(),
     )
 
     set_field = schema.Set(
@@ -257,7 +261,8 @@ class IExample(model.Schema):
             values=[u"Beginner", u"Advanced", u"Professional"],
         ),
         required=False,
-        missing_value={},
+        missing_value=set(),
+        default=set(),
     )
 
     directives.widget(set_field_checkbox=CheckBoxFieldWidget)
@@ -268,7 +273,8 @@ class IExample(model.Schema):
             values=[u"Beginner", u"Advanced", u"Professional"],
         ),
         required=False,
-        missing_value={},
+        missing_value=set(),
+        default=set(),
     )
 
     # File fields
@@ -280,6 +286,18 @@ class IExample(model.Schema):
 
     file_field = NamedBlobFile(
         title=u"File field",
+        description=u"A upload field for files (plone.namedfile.field.NamedBlobFile)",
+        required=False,
+    )
+
+    file_field2 = NamedBlobFile(
+        title=u"File field2",
+        description=u"A upload field for files (plone.namedfile.field.NamedBlobFile)",
+        required=False,
+    )
+
+    file_field3 = NamedBlobFile(
+        title=u"File field3",
         description=u"A upload field for files (plone.namedfile.field.NamedBlobFile)",
         required=False,
     )
