@@ -152,7 +152,7 @@ class IExample(model.Schema):
 
     textline_field = schema.TextLine(
         title=u"Textline field",
-        description=u"A simple input field (schema.TextLine)",
+        description=u"A simple input field (zope.schema.TextLine)",
         required=False,
     )
 
@@ -503,7 +503,7 @@ class IExample(model.Schema):
     # A good way to use these is in combination with a index that allows you to query these connenctions.
     uuid_choice_field = schema.Choice(
         title=u"Choice field with RelatedItems widget storing uuids",
-        description=u"schema.Choice",
+        description=u"zope.schema.Choice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
@@ -511,7 +511,7 @@ class IExample(model.Schema):
 
     uuid_list_field = schema.List(
         title=u"List Field with RelatedItems widget storing uuids",
-        description=u"schema.List",
+        description=u"zope.schema.List",
         default=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -521,7 +521,7 @@ class IExample(model.Schema):
 
     uuid_choice_field_constrained = schema.Choice(
         title=u"Choice field with RelatedItems widget storing uuids (only allows Documents)",
-        description=u"schema.Choice",
+        description=u"zope.schema.Choice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
@@ -533,7 +533,7 @@ class IExample(model.Schema):
 
     uuid_list_field_constrained = schema.List(
         title=u"List Field with RelatedItems widget storing uuids (only allows Documents and Events)",
-        description=u"schema.List",
+        description=u"zope.schema.List",
         default=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -547,7 +547,7 @@ class IExample(model.Schema):
 
     uuid_list_field_search_mode = schema.List(
         title=u"List Field with RelatedItems widget in Search Mode storing uuids",
-        description=u"schema.List",
+        description=u"zope.schema.List",
         default=[],
         value_type=schema.Choice(
             source=CatalogSource(
@@ -629,7 +629,7 @@ class IExample(model.Schema):
 
     uuid_choice_field_ajax_select = schema.Choice(
         title=u"Relationchoice Field with AJAXSelect storing uuids",
-        description=u"z3c.relationfield.schema.RelationChoice",
+        description=u"zope.schema.Choice with z3c.relationfield.schema.RelationChoice",
         vocabulary=StaticCatalogVocabulary(
             {
                 "portal_type": ["Document", "Event"],
@@ -653,7 +653,7 @@ class IExample(model.Schema):
 
     uuid_list_field_ajax_select = schema.List(
         title=u"Relationlist Field with AJAXSelect storing uuids",
-        description=u"z3c.relationfield.schema.RelationList",
+        description=u"zope.schema.List with z3c.relationfield.schema.RelationList",
         value_type=schema.Choice(
             vocabulary=StaticCatalogVocabulary(
                 {
