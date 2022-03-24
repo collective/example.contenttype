@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from collective.z3cform.datagridfield.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield.row import DictRow
-from plone.app.multilingual.browser.interfaces import make_relation_root_path
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.vocabularies.catalog import StaticCatalogVocabulary
@@ -30,27 +27,6 @@ from zope import schema
 from zope.interface import implementer
 
 from zope.interface import Interface
-
-
-class IMyRowSchema(Interface):
-    """Define schema for row in Plone Classic DataGridField"""
-
-    choice_field = schema.Choice(
-        title=u"Choice Field",
-        vocabulary="plone.app.vocabularies.PortalTypes",
-        required=False,
-    )
-    directives.widget("objective", SelectFieldWidget)
-
-    textline_field = schema.TextLine(
-        title=u"Textline field",
-        required=False,
-    )
-
-    bool_field = schema.Bool(
-        title=u"Boolean field",
-        required=False,
-    )
 
 
 class IExample(model.Schema):
@@ -154,12 +130,6 @@ class IExample(model.Schema):
         ),
     )
 
-    fieldset(
-        "datagrid",
-        label=u"Datagrid field",
-        fields=("datagrid_field",),
-    )
-
     primary("title")
     title = schema.TextLine(
         title=u"Primary Field (Textline)",
@@ -182,7 +152,7 @@ class IExample(model.Schema):
 
     textline_field = schema.TextLine(
         title=u"Textline field",
-        description=u"A simple input field (schema.TextLine)",
+        description=u"A simple input field (zope.schema.TextLine)",
         required=False,
     )
 
@@ -230,6 +200,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     directives.widget(list_field_checkbox=CheckBoxFieldWidget)
@@ -241,6 +212,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     directives.widget(list_field_select=SelectFieldWidget)
@@ -252,6 +224,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=[],
+        default=[],
     )
 
     list_field_voc_unconstrained = schema.List(
@@ -278,6 +251,7 @@ class IExample(model.Schema):
         ),
         required=False,
         missing_value=(),
+        default=(),
     )
 
     set_field = schema.Set(
@@ -287,7 +261,8 @@ class IExample(model.Schema):
             values=[u"Beginner", u"Advanced", u"Professional"],
         ),
         required=False,
-        missing_value={},
+        missing_value=set(),
+        default=set(),
     )
 
     directives.widget(set_field_checkbox=CheckBoxFieldWidget)
@@ -298,7 +273,8 @@ class IExample(model.Schema):
             values=[u"Beginner", u"Advanced", u"Professional"],
         ),
         required=False,
-        missing_value={},
+        missing_value=set(),
+        default=set(),
     )
 
     # File fields
@@ -533,7 +509,7 @@ class IExample(model.Schema):
     # A good way to use these is in combination with a index that allows you to query these connenctions.
     uuid_choice_field = schema.Choice(
         title=u"Choice field with RelatedItems widget storing uuids",
-        description=u"schema.Choice",
+        description=u"zope.schema.Choice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
@@ -541,7 +517,7 @@ class IExample(model.Schema):
 
     uuid_list_field = schema.List(
         title=u"List Field with RelatedItems widget storing uuids",
-        description=u"schema.List",
+        description=u"zope.schema.List",
         default=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -551,7 +527,7 @@ class IExample(model.Schema):
 
     uuid_choice_field_constrained = schema.Choice(
         title=u"Choice field with RelatedItems widget storing uuids (only allows Documents)",
-        description=u"schema.Choice",
+        description=u"zope.schema.Choice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
@@ -563,7 +539,7 @@ class IExample(model.Schema):
 
     uuid_list_field_constrained = schema.List(
         title=u"List Field with RelatedItems widget storing uuids (only allows Documents and Events)",
-        description=u"schema.List",
+        description=u"zope.schema.List",
         default=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -577,7 +553,7 @@ class IExample(model.Schema):
 
     uuid_list_field_search_mode = schema.List(
         title=u"List Field with RelatedItems widget in Search Mode storing uuids",
-        description=u"schema.List",
+        description=u"zope.schema.List",
         default=[],
         value_type=schema.Choice(
             source=CatalogSource(
@@ -659,7 +635,7 @@ class IExample(model.Schema):
 
     uuid_choice_field_ajax_select = schema.Choice(
         title=u"Relationchoice Field with AJAXSelect storing uuids",
-        description=u"z3c.relationfield.schema.RelationChoice",
+        description=u"zope.schema.Choice with z3c.relationfield.schema.RelationChoice",
         vocabulary=StaticCatalogVocabulary(
             {
                 "portal_type": ["Document", "Event"],
@@ -683,7 +659,7 @@ class IExample(model.Schema):
 
     uuid_list_field_ajax_select = schema.List(
         title=u"Relationlist Field with AJAXSelect storing uuids",
-        description=u"z3c.relationfield.schema.RelationList",
+        description=u"zope.schema.List with z3c.relationfield.schema.RelationList",
         value_type=schema.Choice(
             vocabulary=StaticCatalogVocabulary(
                 {
@@ -850,15 +826,6 @@ class IExample(model.Schema):
     #         missing_value={},
     #         ),
     #     )
-
-    datagrid_field = schema.List(
-        title=u"Datagrid field",
-        description=u"schema.List",
-        value_type=DictRow(title=u"Table", schema=IMyRowSchema),
-        default=[],
-        required=False,
-    )
-    directives.widget("datagrid_field", DataGridFieldFactory)
 
 
 @implementer(IExample)

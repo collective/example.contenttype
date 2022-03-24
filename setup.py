@@ -51,11 +51,9 @@ setup(
     install_requires=[
         "setuptools",
         # -*- Extra requirements: -*-
-        "z3c.jbot",
         "plone.api",
         "plone.restapi",
         "plone.app.dexterity",
-        "collective.z3cform.datagridfield",
     ],
     extras_require={
         "test": [
