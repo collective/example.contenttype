@@ -635,7 +635,7 @@ class IExample(model.Schema):
 
     uuid_choice_field_ajax_select = schema.Choice(
         title=u"Relationchoice Field with AJAXSelect storing uuids",
-        description=u"zope.schema.Choice with z3c.relationfield.schema.RelationChoice",
+        description=u"zope.schema.Choice with StaticCatalogVocabulary and AjaxSelectFieldWidget. Documents and Event only.",
         vocabulary=StaticCatalogVocabulary(
             {
                 "portal_type": ["Document", "Event"],
@@ -659,7 +659,7 @@ class IExample(model.Schema):
 
     uuid_list_field_ajax_select = schema.List(
         title=u"Relationlist Field with AJAXSelect storing uuids",
-        description=u"zope.schema.List with z3c.relationfield.schema.RelationList",
+        description=u"zope.schema.List with StaticCatalogVocabulary and AjaxSelectFieldWidget. Published Documents and Event only.",
         value_type=schema.Choice(
             vocabulary=StaticCatalogVocabulary(
                 {
@@ -676,6 +676,7 @@ class IExample(model.Schema):
         vocabulary=StaticCatalogVocabulary(
             {
                 "portal_type": ["Document", "Event"],
+                "review_state": "published",
             },
             title_template="{brain.Type}: {brain.Title} at {path}",
         ),  # Custom item rendering
