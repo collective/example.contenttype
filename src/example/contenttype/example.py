@@ -80,7 +80,6 @@ class IExample(model.Schema):
             "relationlist_field_constrained",
             "relationlist_field_search_mode",
             "relationchoice_field_staticcatalogvocabulary",
-            "relationchoice_field_named_staticcatalogvocabulary",
             # "relationchoice_field_radio",
             "relationlist_field_select",
             "relationlist_field_checkbox",
@@ -408,22 +407,6 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationchoice_field_staticcatalogvocabulary",
-        SelectFieldWidget,
-        frontendOptions={
-            "widget": "object_browser",
-            "widgetProps": {"mode": "link", "return": "single"},
-        },
-    )
-
-    # Named StaticCatalogVocabulary
-    relationchoice_field_named_staticcatalogvocabulary = RelationChoice(
-        title="RelationChoice – named StaticCatalogVocabulary – Object Browser (Classic: Select Widget)",
-        description="relationchoice_field_named_staticcatalogvocabulary",
-        vocabulary="relationchoice_field_named_staticcatalogvocabulary",
-        required=False,
-    )
-    directives.widget(
-        "relationchoice_field_named_staticcatalogvocabulary",
         SelectFieldWidget,
         frontendOptions={
             "widget": "object_browser",
