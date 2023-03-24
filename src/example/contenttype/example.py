@@ -79,7 +79,7 @@ class IExample(model.Schema):
             "relationchoice_field_constrained",
             "relationlist_field_constrained",
             "relationlist_field_search_mode",
-            "relationchoice_field_staticcatalogvocabulary",
+            # "relationchoice_field_select",
             # "relationchoice_field_radio",
             "relationlist_field_select",
             "relationlist_field_checkbox",
@@ -324,8 +324,8 @@ class IExample(model.Schema):
     )
 
     relationlist_field = RelationList(
-        title="RelationList",
-        description="relationlist_field: z3c.relationfield.schema.RelationList",
+        title="Relationlist Field",
+        description="z3c.relationfield.schema.RelationList",
         default=[],
         value_type=RelationChoice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -394,25 +394,20 @@ class IExample(model.Schema):
 
     # # This one also works in Volto!
     # # All other options use the default ObjectWidget in Volto so far.
-    relationchoice_field_staticcatalogvocabulary = RelationChoice(
-        title="RelationChoice – StaticCatalogVocabulary – Object Browser (Classic: Select Widget)",
-        description="relationchoice_field_staticcatalogvocabulary",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-                "review_state": "published",
-            }
-        ),
-        required=False,
-    )
-    directives.widget(
-        "relationchoice_field_staticcatalogvocabulary",
-        SelectFieldWidget,
-        frontendOptions={
-            "widget": "object_browser",
-            "widgetProps": {"mode": "link", "return": "single"},
-        },
-    )
+    # relationchoice_field_select = RelationChoice(
+    #     title="RelationChoice with Select Widget",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #             "review_state": "published",
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationchoice_field_select",
+    #     SelectFieldWidget,
+    # )
 
     # relationchoice_field_radio = RelationChoice(
     #     title="RelationChoice with Radio Widget (and customized title-template)",
