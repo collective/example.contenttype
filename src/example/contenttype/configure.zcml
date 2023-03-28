@@ -23,6 +23,20 @@
       post_handler=".setuphandlers.uninstall"
       />
 
+  <genericsetup:registerProfile
+      name="manyexamples"
+      title="example.contenttype create many examples"
+      description="many examples with many relations"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/manyexamples"
+      />
+    <genericsetup:importStep
+      name="example.contenttype.staff"
+      title="example.contenttype create many examples: example staff"
+      description=""
+      handler=".setuphandlers.create_many_examples"
+      />
+
   <utility
       factory=".setuphandlers.HiddenProfiles"
       name="example.contenttype-hiddenprofiles"
