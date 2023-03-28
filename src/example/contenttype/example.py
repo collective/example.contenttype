@@ -724,6 +724,8 @@ class IExample(model.Schema):
             vocabulary="relationlist_field_named_staticcatalogvocabulary",
         ),
         required=False,
+        default=[],
+        missing_value=[],
     )
     directives.widget(
         "relationlist_field_named_staticcatalogvocabulary",
