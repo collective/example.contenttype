@@ -32,4 +32,13 @@
       name="example.vocabularies.documents"
       component="example.contenttype.vocabularies.DocumentVocabularyFactory" />
 
+  <utility
+    name="relationchoice_field_named_staticcatalogvocabulary"
+    component="example.contenttype.vocabularies.ExamplesVocabularyFactory"
+    />
+
+  <utility
+    name="relationlist_field_named_staticcatalogvocabulary"
+    component="example.contenttype.vocabularies.ExamplesVocabularyFactory"
+    />
 </configure>
