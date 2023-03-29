@@ -30,7 +30,7 @@ def uninstall(context):
 
 
 def create_many_examples(context):
-    number_of_employees = 500
+    number_of_employees = 300
     logger.info("*** Create many examples.")
     portal = api.portal.get()
     staff = api.content.create(type="Document", title="Example Staff", container=portal)
@@ -46,13 +46,16 @@ def create_many_examples(context):
     employees = []
     supervisors = []
     for i in range(number_of_employees):
+        # Employee
         title = f'Employee {ens[i]["first_name"]} {ens[i]["last_name"]}'
         employee = api.content.create(
             type="example", title=title, container=employees_folder
         )
         api.content.transition(employee, "publish")
         employees.append(employee)
-        title = f'Employee {ens[i]["first_name_supervisor"]} {ens[i]["last_name_supervisor"]}'
+
+        # Supervisor
+        title = f'Supervisor {ens[i]["first_name_supervisor"]} {ens[i]["last_name_supervisor"]}'
         supervisor = api.content.create(
             type="example", title=title, container=supervisors_folder
         )
