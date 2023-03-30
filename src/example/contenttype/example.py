@@ -157,6 +157,7 @@ class IExample(model.Schema):
         description="zope.schema.Text",
         required=False,
         missing_value="",
+        default="",
     )
 
     textline_field = schema.TextLine(
@@ -175,7 +176,7 @@ class IExample(model.Schema):
         title="Choice field",
         description="zope.schema.Choice",
         values=["One", "Two", "Three"],
-        required=True,
+        required=False,
     )
 
     directives.widget(choice_field_radio=RadioFieldWidget)
@@ -242,6 +243,7 @@ class IExample(model.Schema):
         value_type=schema.TextLine(),
         required=False,
         missing_value=[],
+        default=[],
     )
     directives.widget(
         "list_field_voc_unconstrained",
