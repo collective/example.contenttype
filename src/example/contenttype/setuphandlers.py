@@ -31,7 +31,9 @@ def uninstall(context):
 
 def create_many_examples(context):
     number_of_employees = 10
-    logger.info("*** Create many examples.")
+    logger.info(
+        "*** Create many examples in /example-staff. Do nothing if this folderish page exists."
+    )
     staff = api.content.get(path="/example-staff")
     if not staff:
         portal = api.portal.get()
@@ -81,5 +83,35 @@ def create_many_examples(context):
                 target=supervisors[rint],
                 relationship="relationlist_field_named_staticcatalogvocabulary",
             )
+
+        # Create broken relations
+        employee = api.content.create(
+            type="example",
+            title="Employee with broken relations",
+            container=employees_folder,
+        )
+        supervisor_1 = api.content.create(
+            type="example", title="Supervisor Tempy Uno", container=supervisors_folder
+        )
+        supervisor_2 = api.content.create(
+            type="example", title="Supervisor Tempy Duo", container=supervisors_folder
+        )
+        api.content.transition(employee, "publish")
+        api.content.transition(supervisor_1, "publish")
+        api.content.transition(supervisor_2, "publish")
+
+        api.relation.create(
+            source=employee,
+            target=supervisor_1,
+            relationship="relationlist_field_named_staticcatalogvocabulary",
+        )
+        api.relation.create(
+            source=employee,
+            target=supervisor_2,
+            relationship="relationlist_field_named_staticcatalogvocabulary",
+        )
+
+        api.content.delete(obj=supervisor_1, check_linkintegrity=False)
+        api.content.delete(obj=supervisor_2, check_linkintegrity=False)
 
         logger.info("*** Many examples created and related.")
