@@ -29,13 +29,17 @@
       description="many examples with many relations"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/manyexamples"
+      post_handler=".setuphandlers.create_many_examples"
       />
-    <genericsetup:importStep
-      name="example.contenttype.staff"
-      title="example.contenttype create many examples: example staff"
-      description=""
-      handler=".setuphandlers.create_many_examples"
-      />
+  <genericsetup:upgradeStep
+    title="Create examples: /example-staff"
+    description="examples, relations and broken relations"
+    source="1000"
+    destination="1000"
+    handler=".setuphandlers.create_many_examples"
+    sortkey="1"
+    profile="example.contenttype:default"
+    />
 
   <utility
       factory=".setuphandlers.HiddenProfiles"
