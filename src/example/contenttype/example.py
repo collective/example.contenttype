@@ -7,18 +7,13 @@ from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
-
 from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.field import NamedBlobImage
 from plone.schema import Email
-
-# from plone.schema import (
-#     Dict,
-# )  # take Dict field from plone.schema to use the widget attribute
+from plone.schema import JSONField
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from plone.supermodel.directives import primary
-
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from z3c.relationfield.schema import RelationChoice
@@ -26,7 +21,55 @@ from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 
-from zope.interface import Interface
+import json
+
+
+#  dictionary with key 'items'
+# 'items': array of objects
+MIXEDFIELD_SCHEMA = json.dumps(
+    {
+        "type": "object",
+        "properties": {
+            "items": {"type": "array", "items": {"type": "object", "properties": {}}}
+        },
+    }
+)
+
+mixedfield_frontend_schema = {
+    "title": "History-Entry",
+    "properties": {
+        "historydate": {
+            "title": "Date",
+            "widget": "date",
+        },
+        "historytopic": {
+            "title": "What",
+        },
+        "historyversion": {
+            "title": "Version",
+        },
+        "historyauthor": {
+            "title": "Who",
+        },
+    },
+    "fieldsets": [
+        {
+            "id": "default",
+            "title": "History-Entry",
+            "fields": [
+                "historydate",
+                "historytopic",
+                "historyversion",
+                "historyauthor",
+            ],
+        },
+    ],
+    "required": [],
+}
+
+
+def mixedfield_value_function(value):
+    return value.get("items", [])
 
 
 class IExample(model.Schema):
@@ -125,6 +168,7 @@ class IExample(model.Schema):
         "otherfields",
         label="Other fields",
         fields=(
+            "mixed_field",
             "uri_field",
             "sourcetext_field",
             "ascii_field",
@@ -876,6 +920,32 @@ class IExample(model.Schema):
     #         missing_value={},
     #         ),
     #     )
+
+    # Datagrid
+    # mixedfield
+    # TODO Needs Volto ObjectListViewWidget to render in view mode
+    mixed_field = schema.List(
+        title="Mixedfield: datagrid field for Volto",
+        required=False,
+        value_type=JSONField(
+            title="Foo title",
+            required=False,
+            schema=MIXEDFIELD_SCHEMA,
+            default={"items": []},
+            missing_value={"items": []},
+        ),
+        default=[],
+        missing_value=[],
+    )
+    directives.widget(
+        "mixed_field",
+        frontendOptions={
+            "widget": "object_list",
+            "widgetProps": {
+                "schema": mixedfield_frontend_schema,
+            },
+        },
+    )
 
 
 @implementer(IExample)
