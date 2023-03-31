@@ -71,6 +71,15 @@ class IExample(model.Schema):
     )
 
     fieldset(
+        "relationfields_volto",
+        label="Relation fields – Volto",
+        fields=(
+            "relationchoice_field_named_staticcatalogvocabulary",
+            "relationlist_field_named_staticcatalogvocabulary",
+        ),
+    )
+
+    fieldset(
         "relationfields",
         label="Relation fields",
         fields=(
@@ -148,6 +157,7 @@ class IExample(model.Schema):
         description="zope.schema.Text",
         required=False,
         missing_value="",
+        default="",
     )
 
     textline_field = schema.TextLine(
@@ -166,7 +176,7 @@ class IExample(model.Schema):
         title="Choice field",
         description="zope.schema.Choice",
         values=["One", "Two", "Three"],
-        required=True,
+        required=False,
     )
 
     directives.widget(choice_field_radio=RadioFieldWidget)
@@ -233,6 +243,7 @@ class IExample(model.Schema):
         value_type=schema.TextLine(),
         required=False,
         missing_value=[],
+        default=[],
     )
     directives.widget(
         "list_field_voc_unconstrained",
@@ -686,6 +697,44 @@ class IExample(model.Schema):
     #         "closeOnSelect": False,  # - Leave dropdown open for multiple selection
     #     },
     # )
+
+    """Relation fields like Volto likes it
+
+    RelationChoice and RelationList with named StaticCatalogVocabulary
+
+    StaticCatalogVocabulary registered with same name as field/relation.
+    This allowes Volto relations control panel to restrict potential targets.
+    """
+
+    relationchoice_field_named_staticcatalogvocabulary = RelationChoice(
+        title="RelationChoice – named StaticCatalogVocabulary – Select widget",
+        description="field/relation: relationchoice_field_named_staticcatalogvocabulary",
+        vocabulary="relationchoice_field_named_staticcatalogvocabulary",
+        required=False,
+    )
+    directives.widget(
+        "relationchoice_field_named_staticcatalogvocabulary",
+        frontendOptions={
+            "widget": "select",
+        },
+    )
+
+    relationlist_field_named_staticcatalogvocabulary = RelationList(
+        title="RelationList – named StaticCatalogVocabulary – Select widget",
+        description="field/relation: relationlist_field_named_staticcatalogvocabulary",
+        value_type=RelationChoice(
+            vocabulary="relationlist_field_named_staticcatalogvocabulary",
+        ),
+        required=False,
+        default=[],
+        missing_value=[],
+    )
+    directives.widget(
+        "relationlist_field_named_staticcatalogvocabulary",
+        frontendOptions={
+            "widget": "select",
+        },
+    )
 
     # Number fields
     int_field = schema.Int(
