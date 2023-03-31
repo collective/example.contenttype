@@ -11,3 +11,14 @@ def DocumentVocabularyFactory(context=None):
             "sort_on": "sortable_title",
         }
     )
+
+
+@provider(IVocabularyFactory)
+def ExamplesVocabularyFactory(context=None):
+    return StaticCatalogVocabulary(
+        {
+            "portal_type": ["example"],
+            "review_state": "published",
+            "sort_on": "sortable_title",
+        }
+    )

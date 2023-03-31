@@ -37,24 +37,24 @@ class IExample(model.Schema):
 
     fieldset(
         "numberfields",
-        label=u"Number fields",
+        label="Number fields",
         fields=("int_field", "float_field"),
     )
 
     fieldset(
         "datetimefields",
-        label=u"Date and time fields",
+        label="Date and time fields",
         fields=(
             "datetime_field",
             "date_field",
-            "time_field",
-            "timedelta_field",
+            # "time_field",
+            # "timedelta_field",
         ),
     )
 
     fieldset(
         "choicefields",
-        label=u"Choice and Multiple Choice fields",
+        label="Choice and Multiple Choice fields",
         fields=(
             "choice_field",
             "choice_field_radio",
@@ -71,50 +71,59 @@ class IExample(model.Schema):
     )
 
     fieldset(
+        "relationfields_volto",
+        label="Relation fields – Volto",
+        fields=(
+            "relationchoice_field_named_staticcatalogvocabulary",
+            "relationlist_field_named_staticcatalogvocabulary",
+        ),
+    )
+
+    fieldset(
         "relationfields",
-        label=u"Relation fields",
+        label="Relation fields",
         fields=(
             "relationchoice_field",
             "relationlist_field",
             "relationchoice_field_constrained",
             "relationlist_field_constrained",
             "relationlist_field_search_mode",
-            "relationchoice_field_select",
-            "relationchoice_field_radio",
+            # "relationchoice_field_select",
+            # "relationchoice_field_radio",
             "relationlist_field_select",
             "relationlist_field_checkbox",
-            "relationchoice_field_ajax_select",
-            "relationlist_field_ajax_select",
+            # "relationchoice_field_ajax_select",
+            # "relationlist_field_ajax_select",
         ),
     )
 
     fieldset(
         "uuidrelationfields",
-        label=u"Relation widgets with uuids",
+        label="Relation widgets with uuids",
         fields=(
             "uuid_choice_field",
             "uuid_list_field",
             "uuid_choice_field_constrained",
             "uuid_list_field_constrained",
             "uuid_list_field_search_mode",
-            "uuid_choice_field_select",
-            "uuid_choice_field_radio",
+            # "uuid_choice_field_select",
+            # "uuid_choice_field_radio",
             "uuid_list_field_select",
             "uuid_list_field_checkbox",
-            "uuid_choice_field_ajax_select",
-            "uuid_list_field_ajax_select",
+            # "uuid_choice_field_ajax_select",
+            # "uuid_list_field_ajax_select",
         ),
     )
 
     fieldset(
         "filefields",
-        label=u"File fields",
+        label="File fields",
         fields=("file_field", "image_field"),
     )
 
     fieldset(
         "otherfields",
-        label=u"Other fields",
+        label="Other fields",
         fields=(
             "uri_field",
             "sourcetext_field",
@@ -132,71 +141,72 @@ class IExample(model.Schema):
 
     primary("title")
     title = schema.TextLine(
-        title=u"Primary Field (Textline)",
-        description=u"zope.schema.TextLine",
+        title="Primary Field (Textline)",
+        description="zope.schema.TextLine",
         required=True,
     )
 
     description = schema.TextLine(
-        title=u"Description (Textline)",
-        description=u"zope.schema.TextLine",
+        title="Description (Textline)",
+        description="zope.schema.TextLine",
         required=False,
     )
 
     text_field = schema.Text(
-        title=u"Text Field",
-        description=u"zope.schema.Text",
+        title="Text Field",
+        description="zope.schema.Text",
         required=False,
-        missing_value=u"",
+        missing_value="",
+        default="",
     )
 
     textline_field = schema.TextLine(
-        title=u"Textline field",
-        description=u"A simple input field (zope.schema.TextLine)",
+        title="Textline field",
+        description="A simple input field (zope.schema.TextLine)",
         required=False,
     )
 
     bool_field = schema.Bool(
-        title=u"Boolean field",
-        description=u"zope.schema.Bool",
+        title="Boolean field",
+        description="zope.schema.Bool",
         required=False,
     )
 
     choice_field = schema.Choice(
-        title=u"Choice field",
-        description=u"zope.schema.Choice",
-        values=[u"One", u"Two", u"Three"],
-        required=True,
+        title="Choice field",
+        description="zope.schema.Choice",
+        values=["One", "Two", "Three"],
+        required=False,
     )
 
     directives.widget(choice_field_radio=RadioFieldWidget)
     choice_field_radio = schema.Choice(
-        title=u"Choice field with radio boxes",
-        description=u"zope.schema.Choice",
-        values=[u"One", u"Two", u"Three"],
+        title="Choice field with radio boxes",
+        description="zope.schema.Choice",
+        values=["One", "Two", "Three"],
         required=False,
     )
 
     choice_field_voc = schema.Choice(
-        title=u"Choicefield with values from named vocabulary",
-        description=u"zope.schema.Choice",
+        title="Choicefield with values from named vocabulary",
+        description="zope.schema.Choice",
         vocabulary="plone.app.vocabularies.PortalTypes",
         required=False,
     )
 
     directives.widget(choice_field_select=SelectFieldWidget)
     choice_field_select = schema.Choice(
-        title=u"Choicefield with select2 widget",
-        description=u"zope.schema.Choice",
+        title="Choicefield with select2 widget",
+        description="zope.schema.Choice",
         vocabulary="plone.app.vocabularies.PortalTypes",
         required=False,
     )
 
     list_field = schema.List(
-        title=u"List field",
-        description=u"zope.schema.List",
+        title="List field",
+        description="zope.schema.List",
         value_type=schema.Choice(
-            values=[u"Beginner", u"Advanced", u"Professional"],
+            values=["Beginner", "Advanced", "Professional"],
         ),
         required=False,
         missing_value=[],
@@ -205,10 +215,10 @@ class IExample(model.Schema):
 
     directives.widget(list_field_checkbox=CheckBoxFieldWidget)
     list_field_checkbox = schema.List(
-        title=u"List field with checkboxes",
-        description=u"zope.schema.List",
+        title="List field with checkboxes",
+        description="zope.schema.List",
         value_type=schema.Choice(
-            values=[u"Beginner", u"Advanced", u"Professional"],
+            values=["Beginner", "Advanced", "Professional"],
         ),
         required=False,
         missing_value=[],
@@ -217,10 +227,10 @@ class IExample(model.Schema):
 
     directives.widget(list_field_select=SelectFieldWidget)
     list_field_select = schema.List(
-        title=u"List field with select widget",
-        description=u"zope.schema.List",
+        title="List field with select widget",
+        description="zope.schema.List",
         value_type=schema.Choice(
-            values=[u"Beginner", u"Advanced", u"Professional"],
+            values=["Beginner", "Advanced", "Professional"],
         ),
         required=False,
         missing_value=[],
@@ -228,11 +238,12 @@ class IExample(model.Schema):
     )
 
     list_field_voc_unconstrained = schema.List(
-        title=u"List field with values from vocabulary but not constrained to them.",
-        description=u"zope.schema.List",
+        title="List field with values from vocabulary but not constrained to them.",
+        description="zope.schema.List",
         value_type=schema.TextLine(),
         required=False,
         missing_value=[],
+        default=[],
     )
     directives.widget(
         "list_field_voc_unconstrained",
@@ -244,10 +255,10 @@ class IExample(model.Schema):
     )
 
     tuple_field = schema.Tuple(
-        title=u"Tuple field",
-        description=u"zope.schema.Tuple",
+        title="Tuple field",
+        description="zope.schema.Tuple",
         value_type=schema.Choice(
-            values=[u"Beginner", u"Advanced", u"Professional"],
+            values=["Beginner", "Advanced", "Professional"],
         ),
         required=False,
         missing_value=(),
@@ -255,10 +266,10 @@ class IExample(model.Schema):
     )
 
     set_field = schema.Set(
-        title=u"Set field",
-        description=u"zope.schema.Set",
+        title="Set field",
+        description="zope.schema.Set",
         value_type=schema.Choice(
-            values=[u"Beginner", u"Advanced", u"Professional"],
+            values=["Beginner", "Advanced", "Professional"],
         ),
         required=False,
         missing_value=set(),
@@ -267,10 +278,10 @@ class IExample(model.Schema):
 
     directives.widget(set_field_checkbox=CheckBoxFieldWidget)
     set_field_checkbox = schema.Set(
-        title=u"Set field with checkboxes",
-        description=u"zope.schema.Set",
+        title="Set field with checkboxes",
+        description="zope.schema.Set",
         value_type=schema.Choice(
-            values=[u"Beginner", u"Advanced", u"Professional"],
+            values=["Beginner", "Advanced", "Professional"],
         ),
         required=False,
         missing_value=set(),
@@ -279,53 +290,53 @@ class IExample(model.Schema):
 
     # File fields
     image_field = NamedBlobImage(
-        title=u"Image field",
-        description=u"A upload field for images (plone.namedfile.field.NamedBlobImage)",
+        title="Image field",
+        description="A upload field for images (plone.namedfile.field.NamedBlobImage)",
         required=False,
     )
 
     file_field = NamedBlobFile(
-        title=u"File field",
-        description=u"A upload field for files (plone.namedfile.field.NamedBlobFile)",
+        title="File field",
+        description="A upload field for files (plone.namedfile.field.NamedBlobFile)",
         required=False,
     )
 
     # Date and Time fields
     datetime_field = schema.Datetime(
-        title=u"Datetime field",
-        description=u"Uses a date and time picker (zope.schema.Datetime)",
+        title="Datetime field",
+        description="Uses a date and time picker (zope.schema.Datetime)",
         required=False,
     )
 
     date_field = schema.Date(
-        title=u"Date field",
-        description=u"Uses a date picker (zope.schema.Date)",
+        title="Date field",
+        description="Uses a date picker (zope.schema.Date)",
         required=False,
     )
 
-    time_field = schema.Time(
-        title=u"Time field",
-        description=u"zope.schema.Time",
-        required=False,
-    )
+    # time_field = schema.Time(
+    #     title="Time field",
+    #     description="zope.schema.Time",
+    #     required=False,
+    # )
 
-    timedelta_field = schema.Timedelta(
-        title=u"Timedelta field",
-        description=u"zope.schema.Timedelta",
-        required=False,
-    )
+    # timedelta_field = schema.Timedelta(
+    #     title="Timedelta field",
+    #     description="zope.schema.Timedelta",
+    #     required=False,
+    # )
 
     # Relation Fields
     relationchoice_field = RelationChoice(
-        title=u"Relationchoice field",
-        description=u"z3c.relationfield.schema.RelationChoice",
+        title="Relationchoice field",
+        description="z3c.relationfield.schema.RelationChoice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
 
     relationlist_field = RelationList(
-        title=u"Relationlist Field",
-        description=u"z3c.relationfield.schema.RelationList",
+        title="Relationlist Field",
+        description="z3c.relationfield.schema.RelationList",
         default=[],
         value_type=RelationChoice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -333,8 +344,8 @@ class IExample(model.Schema):
     )
 
     relationchoice_field_constrained = RelationChoice(
-        title=u"Relationchoice field (only allows Documents)",
-        description=u"z3c.relationfield.schema.RelationChoice",
+        title="Relationchoice field (only allows Documents)",
+        description="z3c.relationfield.schema.RelationChoice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
@@ -345,8 +356,8 @@ class IExample(model.Schema):
     )
 
     relationlist_field_constrained = RelationList(
-        title=u"Relationlist Field (only allows Documents and Events)",
-        description=u"z3c.relationfield.schema.RelationList",
+        title="Relationlist Field (only allows Documents and Events)",
+        description="z3c.relationfield.schema.RelationList",
         default=[],
         value_type=RelationChoice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -359,8 +370,8 @@ class IExample(model.Schema):
     )
 
     relationlist_field_search_mode = RelationList(
-        title=u"Relationlist Field in Search Mode (constrained to published Documents and Events)",
-        description=u"z3c.relationfield.schema.RelationList",
+        title="Relationlist Field in Search Mode (constrained to published Documents and Events)",
+        description="z3c.relationfield.schema.RelationList",
         default=[],
         value_type=RelationChoice(
             source=CatalogSource(
@@ -392,41 +403,41 @@ class IExample(model.Schema):
 
     # From here on we use other widgets than the default RelatedItemsFieldWidget
 
-    # This one also works in Volto!
-    # All other options use the default ObjectWidget in Volto so far.
-    relationchoice_field_select = RelationChoice(
-        title=u"RelationChoice with Select Widget",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-                "review_state": "published",
-            }
-        ),
-        required=False,
-    )
-    directives.widget(
-        "relationchoice_field_select",
-        SelectFieldWidget,
-    )
+    # # This one also works in Volto!
+    # # All other options use the default ObjectWidget in Volto so far.
+    # relationchoice_field_select = RelationChoice(
+    #     title="RelationChoice with Select Widget",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #             "review_state": "published",
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationchoice_field_select",
+    #     SelectFieldWidget,
+    # )
 
-    relationchoice_field_radio = RelationChoice(
-        title=u"RelationChoice with Radio Widget (and customized title-template)",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-                "review_state": "published",
-            },
-            title_template="{brain.Title}",
-        ),  # Set a custom vocabulary item title
-        required=False,
-    )
-    directives.widget(
-        "relationchoice_field_radio",
-        RadioFieldWidget,
-    )
+    # relationchoice_field_radio = RelationChoice(
+    #     title="RelationChoice with Radio Widget (and customized title-template)",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #             "review_state": "published",
+    #         },
+    #         title_template="{brain.Title}",
+    #     ),  # Set a custom vocabulary item title
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationchoice_field_radio",
+    #     RadioFieldWidget,
+    # )
 
     relationlist_field_select = RelationList(
-        title=u"RelationList with select widget with items from a named vocabulary",
+        title="RelationList with select widget with items from a named vocabulary",
         value_type=RelationChoice(
             vocabulary="example.vocabularies.documents",
         ),
@@ -441,7 +452,7 @@ class IExample(model.Schema):
     )
 
     relationlist_field_checkbox = RelationList(
-        title=u"RelationList with Checkboxes",
+        title="RelationList with Checkboxes",
         value_type=RelationChoice(
             vocabulary="example.vocabularies.documents",
         ),
@@ -452,72 +463,72 @@ class IExample(model.Schema):
         CheckBoxFieldWidget,
     )
 
-    relationchoice_field_ajax_select = RelationChoice(
-        title=u"Relationchoice Field with AJAXSelect",
-        description=u"z3c.relationfield.schema.RelationChoice",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        required=False,
-    )
-    directives.widget(
-        "relationchoice_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-        },
-    )
+    # relationchoice_field_ajax_select = RelationChoice(
+    #     title="Relationchoice Field with AJAXSelect",
+    #     description="z3c.relationfield.schema.RelationChoice",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationchoice_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
 
-    relationlist_field_ajax_select = RelationList(
-        title=u"Relationlist Field with AJAXSelect",
-        description=u"z3c.relationfield.schema.RelationList",
-        value_type=RelationChoice(
-            vocabulary=StaticCatalogVocabulary(
-                {
-                    "portal_type": ["Document", "Event"],
-                    "review_state": "published",
-                }
-            )
-        ),
-        required=False,
-    )
-    directives.widget(
-        "relationlist_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event", "Folder"],
-            },
-            title_template="{brain.Type}: {brain.Title} at {path}",
-        ),  # Custom item rendering
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-        },
-    )
+    # relationlist_field_ajax_select = RelationList(
+    #     title="Relationlist Field with AJAXSelect",
+    #     description="z3c.relationfield.schema.RelationList",
+    #     value_type=RelationChoice(
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 "portal_type": ["Document", "Event"],
+    #                 "review_state": "published",
+    #             }
+    #         )
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "relationlist_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event", "Folder"],
+    #         },
+    #         title_template="{brain.Type}: {brain.Title} at {path}",
+    #     ),  # Custom item rendering
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
 
     # These look like relationsfields (see above) but only store the uuid(s) of the selected target
     # as a string in a the field instead of a RelationValue.
     # A good way to use these is in combination with a index that allows you to query these connenctions.
     uuid_choice_field = schema.Choice(
-        title=u"Choice field with RelatedItems widget storing uuids",
-        description=u"zope.schema.Choice",
+        title="Choice field with RelatedItems widget storing uuids",
+        description="zope.schema.Choice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
     directives.widget("uuid_choice_field", RelatedItemsFieldWidget)
 
     uuid_list_field = schema.List(
-        title=u"List Field with RelatedItems widget storing uuids",
-        description=u"zope.schema.List",
+        title="List Field with RelatedItems widget storing uuids",
+        description="zope.schema.List",
         default=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -526,8 +537,8 @@ class IExample(model.Schema):
     directives.widget("uuid_list_field", RelatedItemsFieldWidget)
 
     uuid_choice_field_constrained = schema.Choice(
-        title=u"Choice field with RelatedItems widget storing uuids (only allows Documents)",
-        description=u"zope.schema.Choice",
+        title="Choice field with RelatedItems widget storing uuids (only allows Documents)",
+        description="zope.schema.Choice",
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
@@ -538,8 +549,8 @@ class IExample(model.Schema):
     )
 
     uuid_list_field_constrained = schema.List(
-        title=u"List Field with RelatedItems widget storing uuids (only allows Documents and Events)",
-        description=u"zope.schema.List",
+        title="List Field with RelatedItems widget storing uuids (only allows Documents and Events)",
+        description="zope.schema.List",
         default=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Catalog"),
         required=False,
@@ -552,8 +563,8 @@ class IExample(model.Schema):
     )
 
     uuid_list_field_search_mode = schema.List(
-        title=u"List Field with RelatedItems widget in Search Mode storing uuids",
-        description=u"zope.schema.List",
+        title="List Field with RelatedItems widget in Search Mode storing uuids",
+        description="zope.schema.List",
         default=[],
         value_type=schema.Choice(
             source=CatalogSource(
@@ -575,39 +586,39 @@ class IExample(model.Schema):
 
     # From here on we use other widgets than the default RelatedItemsFieldWidget
 
-    uuid_choice_field_select = schema.Choice(
-        title=u"UUID Choice with select widget storing uuids",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-                "review_state": "published",
-            }
-        ),
-        required=False,
-    )
-    directives.widget(
-        "uuid_choice_field_select",
-        SelectFieldWidget,
-    )
+    # uuid_choice_field_select = schema.Choice(
+    #     title="UUID Choice with select widget storing uuids",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #             "review_state": "published",
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "uuid_choice_field_select",
+    #     SelectFieldWidget,
+    # )
 
-    uuid_choice_field_radio = schema.Choice(
-        title=u"RelationChoice with Radio widget storing uuids",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-                "review_state": "published",
-            },
-            title_template="{brain.Title}",
-        ),  # Set a custom vocabulary item title
-        required=False,
-    )
-    directives.widget(
-        "uuid_choice_field_radio",
-        RadioFieldWidget,
-    )
+    # uuid_choice_field_radio = schema.Choice(
+    #     title="RelationChoice with Radio widget storing uuids",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #             "review_state": "published",
+    #         },
+    #         title_template="{brain.Title}",
+    #     ),  # Set a custom vocabulary item title
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "uuid_choice_field_radio",
+    #     RadioFieldWidget,
+    # )
 
     uuid_list_field_select = schema.List(
-        title=u"RelationList with select widget with items from a named vocabulary storing uuids",
+        title="RelationList with select widget with items from a named vocabulary storing uuids",
         value_type=schema.Choice(
             vocabulary="example.vocabularies.documents",
         ),
@@ -622,7 +633,7 @@ class IExample(model.Schema):
     )
 
     uuid_list_field_checkbox = schema.List(
-        title=u"RelationList with Checkboxes storing uuids",
+        title="RelationList with Checkboxes storing uuids",
         value_type=schema.Choice(
             vocabulary="example.vocabularies.documents",
         ),
@@ -633,126 +644,164 @@ class IExample(model.Schema):
         CheckBoxFieldWidget,
     )
 
-    uuid_choice_field_ajax_select = schema.Choice(
-        title=u"Relationchoice Field with AJAXSelect storing uuids",
-        description=u"zope.schema.Choice with StaticCatalogVocabulary and AjaxSelectFieldWidget. Documents and Event only.",
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
+    # uuid_choice_field_ajax_select = schema.Choice(
+    #     title="Relationchoice Field with AJAXSelect storing uuids",
+    #     description="zope.schema.Choice with StaticCatalogVocabulary and AjaxSelectFieldWidget. Documents and Event only.",
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "uuid_choice_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #         }
+    #     ),
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #     },
+    # )
+
+    # uuid_list_field_ajax_select = schema.List(
+    #     title="Relationlist Field with AJAXSelect storing uuids",
+    #     description="zope.schema.List with StaticCatalogVocabulary and AjaxSelectFieldWidget. Published Documents and Event only.",
+    #     value_type=schema.Choice(
+    #         vocabulary=StaticCatalogVocabulary(
+    #             {
+    #                 "portal_type": ["Document", "Event"],
+    #                 "review_state": "published",
+    #             }
+    #         )
+    #     ),
+    #     required=False,
+    # )
+    # directives.widget(
+    #     "uuid_list_field_ajax_select",
+    #     AjaxSelectFieldWidget,
+    #     vocabulary=StaticCatalogVocabulary(
+    #         {
+    #             "portal_type": ["Document", "Event"],
+    #             "review_state": "published",
+    #         },
+    #         title_template="{brain.Type}: {brain.Title} at {path}",
+    #     ),  # Custom item rendering
+    #     pattern_options={  # Options for Select2
+    #         "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
+    #         "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+    #         "closeOnSelect": False,  # - Leave dropdown open for multiple selection
+    #     },
+    # )
+
+    """Relation fields like Volto likes it
+
+    RelationChoice and RelationList with named StaticCatalogVocabulary
+
+    StaticCatalogVocabulary registered with same name as field/relation.
+    This allowes Volto relations control panel to restrict potential targets.
+    """
+
+    relationchoice_field_named_staticcatalogvocabulary = RelationChoice(
+        title="RelationChoice – named StaticCatalogVocabulary – Select widget",
+        description="field/relation: relationchoice_field_named_staticcatalogvocabulary",
+        vocabulary="relationchoice_field_named_staticcatalogvocabulary",
         required=False,
     )
     directives.widget(
-        "uuid_choice_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-            }
-        ),
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
+        "relationchoice_field_named_staticcatalogvocabulary",
+        frontendOptions={
+            "widget": "select",
         },
     )
 
-    uuid_list_field_ajax_select = schema.List(
-        title=u"Relationlist Field with AJAXSelect storing uuids",
-        description=u"zope.schema.List with StaticCatalogVocabulary and AjaxSelectFieldWidget. Published Documents and Event only.",
-        value_type=schema.Choice(
-            vocabulary=StaticCatalogVocabulary(
-                {
-                    "portal_type": ["Document", "Event"],
-                    "review_state": "published",
-                }
-            )
+    relationlist_field_named_staticcatalogvocabulary = RelationList(
+        title="RelationList – named StaticCatalogVocabulary – Select widget",
+        description="field/relation: relationlist_field_named_staticcatalogvocabulary",
+        value_type=RelationChoice(
+            vocabulary="relationlist_field_named_staticcatalogvocabulary",
         ),
         required=False,
+        default=[],
+        missing_value=[],
     )
     directives.widget(
-        "uuid_list_field_ajax_select",
-        AjaxSelectFieldWidget,
-        vocabulary=StaticCatalogVocabulary(
-            {
-                "portal_type": ["Document", "Event"],
-                "review_state": "published",
-            },
-            title_template="{brain.Type}: {brain.Title} at {path}",
-        ),  # Custom item rendering
-        pattern_options={  # Options for Select2
-            "minimumInputLength": 2,  # - Don't query until at least two characters have been typed
-            "ajax": {"quietMillis": 500},  # - Wait 500ms after typing to make query
-            "closeOnSelect": False,  # - Leave dropdown open for multiple selection
+        "relationlist_field_named_staticcatalogvocabulary",
+        frontendOptions={
+            "widget": "select",
         },
     )
 
     # Number fields
     int_field = schema.Int(
-        title=u"Integer Field (e.g. 12)",
-        description=u"zope.schema.Int",
+        title="Integer Field (e.g. 12)",
+        description="zope.schema.Int",
         required=False,
     )
 
     float_field = schema.Float(
-        title=u"Float field, e.g. 12.7",
-        description=u"zope.schema.Float",
+        title="Float field, e.g. 12.7",
+        description="zope.schema.Float",
         required=False,
     )
 
     # Text fields
     email_field = Email(
-        title=u"Email field",
-        description=u"A simple input field for a email (plone.schema.email.Email)",
+        title="Email field",
+        description="A simple input field for a email (plone.schema.email.Email)",
         required=False,
     )
 
     uri_field = schema.URI(
-        title=u"URI field",
-        description=u"A simple input field for a URLs (zope.schema.URI)",
+        title="URI field",
+        description="A simple input field for a URLs (zope.schema.URI)",
         required=False,
     )
 
     richtext_field = RichText(
-        title=u"RichText field",
-        description=u"This uses a richtext editor. (plone.app.textfield.RichText)",
+        title="RichText field",
+        description="This uses a richtext editor. (plone.app.textfield.RichText)",
         max_length=2000,
         required=False,
     )
 
     sourcetext_field = schema.SourceText(
-        title=u"SourceText field",
-        description=u"zope.schema.SourceText",
+        title="SourceText field",
+        description="zope.schema.SourceText",
         required=False,
     )
 
     ascii_field = schema.ASCII(
-        title=u"ASCII field",
-        description=u"zope.schema.ASCII",
+        title="ASCII field",
+        description="zope.schema.ASCII",
         required=False,
     )
 
     bytesline_field = schema.BytesLine(
-        title=u"BytesLine field",
-        description=u"zope.schema.BytesLine",
+        title="BytesLine field",
+        description="zope.schema.BytesLine",
         required=False,
     )
 
     asciiline_field = schema.ASCIILine(
-        title=u"ASCIILine field",
-        description=u"zope.schema.ASCIILine",
+        title="ASCIILine field",
+        description="zope.schema.ASCIILine",
         required=False,
     )
 
     pythonidentifier_field = schema.PythonIdentifier(
-        title=u"PythonIdentifier field",
-        description=u"zope.schema.PythonIdentifier",
+        title="PythonIdentifier field",
+        description="zope.schema.PythonIdentifier",
         required=False,
     )
 
     dottedname_field = schema.DottedName(
-        title=u"DottedName field",
-        description=u"zope.schema.DottedName",
+        title="DottedName field",
+        description="zope.schema.DottedName",
         required=False,
     )
 
