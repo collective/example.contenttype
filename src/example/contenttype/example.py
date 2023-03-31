@@ -37,13 +37,13 @@ class IExample(model.Schema):
 
     fieldset(
         "numberfields",
-        label="Number fields",
+        label="Number",
         fields=("int_field", "float_field"),
     )
 
     fieldset(
         "datetimefields",
-        label="Date and time fields",
+        label="Date and time",
         fields=(
             "datetime_field",
             "date_field",
@@ -54,7 +54,7 @@ class IExample(model.Schema):
 
     fieldset(
         "choicefields",
-        label="Choice and Multiple Choice fields",
+        label="Choice",
         fields=(
             "choice_field",
             "choice_field_radio",
@@ -117,7 +117,7 @@ class IExample(model.Schema):
 
     fieldset(
         "filefields",
-        label="File fields",
+        label="File",
         fields=("file_field", "image_field"),
     )
 
