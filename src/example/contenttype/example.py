@@ -1,31 +1,33 @@
 from plone.app.textfield import RichText
-from plone.app.vocabularies.catalog import CatalogSource
-from plone.app.vocabularies.catalog import StaticCatalogVocabulary
-from plone.app.z3cform.widget import AjaxSelectFieldWidget
-from plone.app.z3cform.widget import RelatedItemsFieldWidget
-from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
 
 from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.field import NamedBlobImage
 from plone.schema import Email
+from plone.schema import JSONField
 
-# from plone.schema import (
-#     Dict,
-# )  # take Dict field from plone.schema to use the widget attribute
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from plone.supermodel.directives import primary
 
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from z3c.form.browser.radio import RadioFieldWidget
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
+
 from zope import schema
 from zope.interface import implementer
 
-from zope.interface import Interface
+import json
+
+
+MIXEDFIELD_SCHEMA = json.dumps(
+    {
+        "type": "object",
+        "properties": {
+            "items": {"type": "array", "items": {"type": "object", "properties": {}}}
+        },
+    }
+)
 
 
 class IExample(model.Schema):
@@ -84,6 +86,12 @@ class IExample(model.Schema):
         label="File",
         fields=("file_field", "image_field"),
     )
+
+    # fieldset(
+    #     "datagrid",
+    #     label="Datagrid field",
+    #     fields=("history_field",),
+    # )
 
     # Default fields
     primary("title")
@@ -255,6 +263,19 @@ class IExample(model.Schema):
         description="zope.schema.Float",
         required=False,
     )
+
+    # # Datagrid field
+    # # See https://training.plone.org/mastering-plone/dexterity_reference.html#mixedfield-datagrid-field
+    # # Be sure to provide a widget 'history_widget' in frontend code.
+    # directives.widget("history_field", frontendOptions={"widget": "history_widget"})
+    # history_field = JSONField(
+    #     title="Mixedfield: datagrid field for Plone",
+    #     required=False,
+    #     schema=MIXEDFIELD_SCHEMA,
+    #     widget="history_widget",
+    #     default={"items": []},
+    #     missing_value={"items": []},
+    # )
 
 
 @implementer(IExample)
