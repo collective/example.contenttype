@@ -20,12 +20,12 @@ from zope.interface import Interface
 
 try:
     # Plone 6.1
-    from plone.app.z3cform.widgets.relateditems import RelatedItemsFieldWidget
+    from plone.app.z3cform.widgets.contentbrowser import ContentBrowserFieldWidget
     from plone.app.z3cform.widgets.select import AjaxSelectFieldWidget
     from plone.app.z3cform.widgets.select import Select2FieldWidget
 except ImportError:
     # Plone 6.0
-    from plone.app.z3cform.widget import RelatedItemsFieldWidget
+    from plone.app.z3cform.widget import RelatedItemsFieldWidget as ContentBrowserFieldWidget
     from plone.app.z3cform.widget import AjaxSelectFieldWidget
     from plone.app.z3cform.widget import SelectFieldWidget as Select2FieldWidget
 
@@ -371,7 +371,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationchoice_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document"]},
     )
 
@@ -385,7 +385,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationlist_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document", "Event"]},
     )
 
@@ -403,7 +403,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationlist_field_search_mode",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={
             "baseCriteria": [  # This is a optimization that limits the catalog-query
                 {
@@ -421,7 +421,7 @@ class IExample(model.Schema):
         },
     )
 
-    # From here on we use other widgets than the default RelatedItemsFieldWidget
+    # From here on we use other widgets than the default ContentBrowserFieldWidget
 
     # # This one also works in Volto!
     # # All other options use the default ObjectWidget in Volto so far.
@@ -544,7 +544,7 @@ class IExample(model.Schema):
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
-    directives.widget("uuid_choice_field", RelatedItemsFieldWidget)
+    directives.widget("uuid_choice_field", ContentBrowserFieldWidget)
 
     uuid_list_field = schema.List(
         title="List Field with RelatedItems widget storing uuids",
@@ -554,7 +554,7 @@ class IExample(model.Schema):
         required=False,
         missing_value=[],
     )
-    directives.widget("uuid_list_field", RelatedItemsFieldWidget)
+    directives.widget("uuid_list_field", ContentBrowserFieldWidget)
 
     uuid_choice_field_constrained = schema.Choice(
         title="Choice field with RelatedItems widget storing uuids (only allows Documents)",
@@ -564,7 +564,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_choice_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document"]},
     )
 
@@ -578,12 +578,12 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_list_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document", "Folder"]},
     )
 
     uuid_list_field_search_mode = schema.List(
-        title="List Field with RelatedItems widget in Search Mode storing uuids",
+        title="List Field with RelatedItems widget in Search Mode storing uuids (constrained to published Documents and Events)",
         description="zope.schema.List",
         default=[],
         value_type=schema.Choice(
@@ -596,7 +596,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_list_field_search_mode",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={
             "selectableTypes": ["Document", "Folder"],
             "basePath": "",  # Start the search at the portal root
@@ -604,7 +604,7 @@ class IExample(model.Schema):
         },
     )
 
-    # From here on we use other widgets than the default RelatedItemsFieldWidget
+    # From here on we use other widgets than the default ContentBrowserFieldWidget
 
     # uuid_choice_field_select = schema.Choice(
     #     title="UUID Choice with select widget storing uuids",
