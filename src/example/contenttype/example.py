@@ -2,31 +2,34 @@
 from plone.app.textfield import RichText
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.vocabularies.catalog import StaticCatalogVocabulary
-from plone.app.z3cform.widget import AjaxSelectFieldWidget
-from plone.app.z3cform.widget import RelatedItemsFieldWidget
-from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform import directives
 from plone.dexterity.content import Container
-
 from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.field import NamedBlobImage
 from plone.schema import Email
-
-# from plone.schema import (
-#     Dict,
-# )  # take Dict field from plone.schema to use the widget attribute
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from plone.supermodel.directives import primary
-
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
-
 from zope.interface import Interface
+
+try:
+    # Plone 6.1
+    from plone.app.z3cform.widgets.contentbrowser import ContentBrowserFieldWidget
+    from plone.app.z3cform.widgets.select import AjaxSelectFieldWidget
+    from plone.app.z3cform.widgets.select import Select2FieldWidget
+except ImportError:
+    # Plone 6.0
+    from plone.app.z3cform.widget import (
+        RelatedItemsFieldWidget as ContentBrowserFieldWidget,
+    )
+    from plone.app.z3cform.widget import AjaxSelectFieldWidget
+    from plone.app.z3cform.widget import SelectFieldWidget as Select2FieldWidget
 
 
 class IExample(model.Schema):
@@ -59,6 +62,7 @@ class IExample(model.Schema):
             "choice_field",
             "choice_field_radio",
             "choice_field_select",
+            "choice_field_treevocabulary",
             "choice_field_voc",
             "list_field",
             "list_field_checkbox",
@@ -194,11 +198,29 @@ class IExample(model.Schema):
         required=False,
     )
 
-    directives.widget(choice_field_select=SelectFieldWidget)
+    directives.widget(choice_field_select=Select2FieldWidget)
     choice_field_select = schema.Choice(
         title="Choicefield with select2 widget",
         description="zope.schema.Choice",
         vocabulary="plone.app.vocabularies.PortalTypes",
+        required=False,
+    )
+
+    directives.widget(choice_field_treevocabulary=Select2FieldWidget)
+    choice_field_treevocabulary = schema.Choice(
+        title="Choicefield with TreeVocabulary",
+        vocabulary=schema.vocabulary.TreeVocabulary.fromDict(
+            {
+                ("foo_group", "Foo Group"): {
+                    ("bar_group", "bar_group", "Bar Group"): {},
+                    ("qux_group", "qux_group", "Qux Group"): {},
+                },
+                ("corge_group", "Corge Group"): {
+                    ("grault_group", "grault_group", "Grault Group"): {},
+                    ("garply_group", "garply_group", "Garply Group"): {},
+                },
+            }
+        ),
         required=False,
     )
 
@@ -225,7 +247,7 @@ class IExample(model.Schema):
         default=[],
     )
 
-    directives.widget(list_field_select=SelectFieldWidget)
+    directives.widget(list_field_select=Select2FieldWidget)
     list_field_select = schema.List(
         title="List field with select widget",
         description="zope.schema.List",
@@ -351,7 +373,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationchoice_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document"]},
     )
 
@@ -365,7 +387,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationlist_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document", "Event"]},
     )
 
@@ -383,7 +405,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationlist_field_search_mode",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={
             "baseCriteria": [  # This is a optimization that limits the catalog-query
                 {
@@ -401,7 +423,7 @@ class IExample(model.Schema):
         },
     )
 
-    # From here on we use other widgets than the default RelatedItemsFieldWidget
+    # From here on we use other widgets than the default ContentBrowserFieldWidget
 
     # # This one also works in Volto!
     # # All other options use the default ObjectWidget in Volto so far.
@@ -417,7 +439,7 @@ class IExample(model.Schema):
     # )
     # directives.widget(
     #     "relationchoice_field_select",
-    #     SelectFieldWidget,
+    #     Select2FieldWidget,
     # )
 
     # relationchoice_field_radio = RelationChoice(
@@ -445,7 +467,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "relationlist_field_select",
-        SelectFieldWidget,
+        Select2FieldWidget,
         pattern_options={
             "closeOnSelect": False,  # Select2 option to leave dropdown open for multiple selection
         },
@@ -524,7 +546,7 @@ class IExample(model.Schema):
         vocabulary="plone.app.vocabularies.Catalog",
         required=False,
     )
-    directives.widget("uuid_choice_field", RelatedItemsFieldWidget)
+    directives.widget("uuid_choice_field", ContentBrowserFieldWidget)
 
     uuid_list_field = schema.List(
         title="List Field with RelatedItems widget storing uuids",
@@ -534,7 +556,7 @@ class IExample(model.Schema):
         required=False,
         missing_value=[],
     )
-    directives.widget("uuid_list_field", RelatedItemsFieldWidget)
+    directives.widget("uuid_list_field", ContentBrowserFieldWidget)
 
     uuid_choice_field_constrained = schema.Choice(
         title="Choice field with RelatedItems widget storing uuids (only allows Documents)",
@@ -544,7 +566,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_choice_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document"]},
     )
 
@@ -558,12 +580,12 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_list_field_constrained",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={"selectableTypes": ["Document", "Folder"]},
     )
 
     uuid_list_field_search_mode = schema.List(
-        title="List Field with RelatedItems widget in Search Mode storing uuids",
+        title="List Field with RelatedItems widget in Search Mode storing uuids (constrained to published Documents and Events)",
         description="zope.schema.List",
         default=[],
         value_type=schema.Choice(
@@ -576,7 +598,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_list_field_search_mode",
-        RelatedItemsFieldWidget,
+        ContentBrowserFieldWidget,
         pattern_options={
             "selectableTypes": ["Document", "Folder"],
             "basePath": "",  # Start the search at the portal root
@@ -584,7 +606,7 @@ class IExample(model.Schema):
         },
     )
 
-    # From here on we use other widgets than the default RelatedItemsFieldWidget
+    # From here on we use other widgets than the default ContentBrowserFieldWidget
 
     # uuid_choice_field_select = schema.Choice(
     #     title="UUID Choice with select widget storing uuids",
@@ -598,7 +620,7 @@ class IExample(model.Schema):
     # )
     # directives.widget(
     #     "uuid_choice_field_select",
-    #     SelectFieldWidget,
+    #     Select2FieldWidget,
     # )
 
     # uuid_choice_field_radio = schema.Choice(
@@ -626,7 +648,7 @@ class IExample(model.Schema):
     )
     directives.widget(
         "uuid_list_field_select",
-        SelectFieldWidget,
+        Select2FieldWidget,
         pattern_options={
             "closeOnSelect": False,  # Select2 option to leave dropdown open for multiple selection
         },

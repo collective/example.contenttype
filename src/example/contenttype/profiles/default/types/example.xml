@@ -3,7 +3,7 @@
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title" i18n:translate="">Example</property>
  <property name="description" i18n:translate=""></property>
- <property name="icon_expr"></property>
+ <property name="icon_expr">string:file-check</property>
  <property name="factory">example</property>
  <property name="add_view_expr">string:${folder_url}/++add++example</property>
  <property name="link_target"></property>
@@ -37,12 +37,12 @@
  <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    description="" icon_expr="" link_target="" url_expr="string:${object_url}"
+    description="" icon_expr="string:toolbar-action/view" link_target="" url_expr="string:${object_url}"
     visible="True">
   <permission value="View"/>
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr=""
-    description="" icon_expr="" link_target=""
+    description="" icon_expr="string:toolbar-action/edit" link_target=""
     url_expr="string:${object_url}/edit" visible="True">
   <permission value="Modify portal content"/>
  </action>
