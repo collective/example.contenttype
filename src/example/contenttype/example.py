@@ -25,7 +25,9 @@ try:
     from plone.app.z3cform.widgets.select import Select2FieldWidget
 except ImportError:
     # Plone 6.0
-    from plone.app.z3cform.widget import RelatedItemsFieldWidget as ContentBrowserFieldWidget
+    from plone.app.z3cform.widget import (
+        RelatedItemsFieldWidget as ContentBrowserFieldWidget,
+    )
     from plone.app.z3cform.widget import AjaxSelectFieldWidget
     from plone.app.z3cform.widget import SelectFieldWidget as Select2FieldWidget
 
@@ -210,12 +212,12 @@ class IExample(model.Schema):
         vocabulary=schema.vocabulary.TreeVocabulary.fromDict(
             {
                 ("foo_group", "Foo Group"): {
-                    ("bar_group", "Bar Group"): {},
-                    ("qux_group", "Qux Group"): {},
+                    ("bar_group", "bar_group", "Bar Group"): {},
+                    ("qux_group", "qux_group", "Qux Group"): {},
                 },
                 ("corge_group", "Corge Group"): {
-                    ("grault_group", "Grault Group"): {},
-                    ("garply_group", "Garply Group"): {},
+                    ("grault_group", "grault_group", "Grault Group"): {},
+                    ("garply_group", "garply_group", "Garply Group"): {},
                 },
             }
         ),
