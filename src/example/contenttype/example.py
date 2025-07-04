@@ -33,18 +33,18 @@ MIXEDFIELD_SCHEMA = json.dumps(
 class IExample(model.Schema):
     """Dexterity-Schema with common field-types."""
 
-    # fieldset(
-    #     "default",
-    #     label="Text, Boolean, Email",
-    #     fields=(
-    #         "title",
-    #         "description",
-    #         "richtext_field",
-    #         "bool_field",
-    #         "email_field",
-    #         "uri_field",
-    #     ),
-    # )
+    fieldset(
+        "basicfields",
+        label="Text, Boolean, Email",
+        fields=(
+            # "title",
+            # "description",
+            "richtext_field",
+            "bool_field",
+            "email_field",
+            "uri_field",
+        ),
+    )
 
     fieldset(
         "numberfields",
