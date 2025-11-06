@@ -30,7 +30,7 @@ def uninstall(context):
 
 
 def create_many_examples(context):
-    number_of_employees = 10
+    number_of_employees = 30
     logger.info(
         "*** Create many examples in /example-staff. Do nothing if this folderish page exists."
     )
